@@ -27,6 +27,7 @@ class HRSystem {
   final List<Author> allAuthors = [];
   List<Employee>? allEmployees = [];
   List<AddressType>? addressTypes = [];
+  List<Person>? persons = [];
   bool applicationSubmitted = false;
 
   // void addEmployee(Employee employee) {
@@ -45,7 +46,11 @@ class HRSystem {
   }
 
   void setAddressTypes(List<AddressType>? addressTyples) {
-    addressTypes = addressTyples;
+    this.addressTypes = addressTyples;
+  }
+
+  void setPersons(List<Person>? persons) {
+    this.persons = persons;
   }
 
   void addBook({

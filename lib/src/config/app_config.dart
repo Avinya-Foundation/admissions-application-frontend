@@ -4,6 +4,13 @@ import 'package:flutter/services.dart';
 
 class AppConfig {
   static String apiUrl = 'http://localhost:8080';
+  static String globalDataApiUrl = 'http://localhost:9090';
+  static String globalDataApiKey = '';
+  static String choreoSTSEndpoint = "https://sts.choreo.dev/oauth2/token";
+  static String choreoSTSClientID = "Mhss_8Q4iuJ83Tt2Mtazju8MltYa";
+  static var apiTokens = null;
+  static String applicationName = 'Avinya Acadamy Student Admissions Portal';
+  static String applicationVersion = '0.1.0';
 
   //AppConfig({required this.apiUrl});
 
