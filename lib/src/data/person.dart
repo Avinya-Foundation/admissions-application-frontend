@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -89,11 +91,11 @@ class Person {
 
 Future<List<Person>> fetchPersons() async {
   final response = await http.get(
-    Uri.parse(AppConfig.globalDataApiUrl + '/person/persons'),
+    Uri.parse(AppConfig.admissionsApplicationBffApiUrl + '/student_applicant'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       'accept': 'application/json',
-      'API-Key': AppConfig.globalDataApiKey,
+      'API-Key': AppConfig.admissionsApplicationBffApiKey,
     },
   );
 
@@ -109,11 +111,12 @@ Future<List<Person>> fetchPersons() async {
 
 Future<Person> fetchPerson(String id) async {
   final response = await http.get(
-    Uri.parse(AppConfig.globalDataApiUrl + '/person/persons/$id'),
+    Uri.parse(
+        AppConfig.admissionsApplicationBffApiUrl + '/student_applicant/$id'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       'accept': 'application/json',
-      'API-Key': AppConfig.globalDataApiKey,
+      'API-Key': AppConfig.admissionsApplicationBffApiKey,
     },
   );
 
@@ -129,26 +132,27 @@ Future<Person> fetchPerson(String id) async {
 
 Future<http.Response> createPerson(Person person) async {
   final response = await http.post(
-    Uri.parse(AppConfig.globalDataApiUrl + '/person/persons'),
+    Uri.parse(AppConfig.admissionsApplicationBffApiUrl + '/student_applicant'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
-      'API-Key': AppConfig.globalDataApiKey,
+      'API-Key': AppConfig.admissionsApplicationBffApiKey,
     },
     body: jsonEncode(person.toJson()),
   );
   if (response.statusCode == 200) {
     return response;
   } else {
+    log(response.body + " Status code =" + response.statusCode.toString());
     throw Exception('Failed to create Person.');
   }
 }
 
 Future<http.Response> updatePerson(Person person) async {
   final response = await http.put(
-    Uri.parse(AppConfig.globalDataApiUrl + '/person/persons'),
+    Uri.parse(AppConfig.admissionsApplicationBffApiUrl + '/student_applicant'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
-      'API-Key': AppConfig.globalDataApiKey,
+      'API-Key': AppConfig.admissionsApplicationBffApiKey,
     },
     body: jsonEncode(person.toJson()),
   );
@@ -161,10 +165,11 @@ Future<http.Response> updatePerson(Person person) async {
 
 Future<http.Response> deletePerson(String id) async {
   final http.Response response = await http.delete(
-    Uri.parse(AppConfig.globalDataApiUrl + '/person/persons/$id'),
+    Uri.parse(
+        AppConfig.admissionsApplicationBffApiUrl + '/student_applicant/$id'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
-      'API-Key': AppConfig.globalDataApiKey,
+      'API-Key': AppConfig.admissionsApplicationBffApiKey,
     },
   );
 

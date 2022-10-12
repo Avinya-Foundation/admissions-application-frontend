@@ -1,6 +1,7 @@
 import 'dart:developer';
 
-import 'package:ShoolManagementSystem/src/data/library.dart';
+import 'package:ShoolManagementSystem/src/data.dart';
+// import 'package:ShoolManagementSystem/src/data/library.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:email_validator/email_validator.dart';
@@ -208,13 +209,17 @@ class _ApplyScreenState extends State<ApplyScreen> {
         log('addSudentApplicant valid');
         log(_phone_Controller.text);
         log(phoneMaskTextInputFormatter.getUnmaskedText());
-//         final AddressType addressType = AddressType(
-//             id: widget.addressType.id,
-//             name: _name_Controller.text,
-//             description: _description_Controller.text,
-// );
-//         await updateAddressType(addressType);
-//         Navigator.of(context).pop(true);
+        final Person person = Person(
+            record_type: 'person',
+            full_name: _full_name_Controller.text,
+            preferred_name: _preferred_name_Controller.text,
+            sex: gender,
+            phone: int.parse(phoneMaskTextInputFormatter.getUnmaskedText()),
+            email: _email_Controller.text);
+        log(person.toJson().toString());
+        final createPersonResponse = await createPerson(person);
+        log(createPersonResponse.toString());
+        //Navigator.of(context).pop(true);
 
       } else {
         log('addSudentApplicant invalid');

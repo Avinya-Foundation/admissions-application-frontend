@@ -53,6 +53,10 @@ class HRSystem {
     this.persons = persons;
   }
 
+  void addPerson(Person person) {
+    persons!.add(person);
+  }
+
   void addBook({
     required String title,
     required String authorName,
