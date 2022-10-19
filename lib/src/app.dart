@@ -95,7 +95,7 @@ class _SchoolManagementSystemState extends State<SchoolManagementSystem> {
 
   Future<ParsedRoute> _guard(ParsedRoute from) async {
     final signedIn = _auth.getSignedIn();
-    final applyRoute = ParsedRoute('/apply', '/apply', {}, {});
+    //final applyRoute = ParsedRoute('/apply', '/apply', {}, {});
     final preconditionsRoute =
         ParsedRoute('/preconditions', '/preconditions', {}, {});
     final signInRoute = ParsedRoute('/signin', '/signin', {}, {});
