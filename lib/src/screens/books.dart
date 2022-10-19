@@ -70,15 +70,15 @@ class _BooksScreenState extends State<BooksScreen>
           controller: _tabController,
           children: [
             BookList(
-              books: hrSystemInstance.popularBooks,
+              books: admissionSystemInstance.popularBooks,
               onTap: _handleBookTapped,
             ),
             BookList(
-              books: hrSystemInstance.newBooks,
+              books: admissionSystemInstance.newBooks,
               onTap: _handleBookTapped,
             ),
             BookList(
-              books: hrSystemInstance.allBooks,
+              books: admissionSystemInstance.allBooks,
               onTap: _handleBookTapped,
             ),
           ],

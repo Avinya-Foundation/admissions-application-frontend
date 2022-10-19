@@ -1,6 +1,6 @@
 import 'package:ShoolManagementSystem/src/data.dart';
 
-final hrSystemInstance = HRSystem()
+final admissionSystemInstance = AdmissionSystem()
   ..addBook(
       title: 'Left Hand of Darkness',
       authorName: 'Ursula K. Le Guin',
@@ -22,19 +22,28 @@ final hrSystemInstance = HRSystem()
       isPopular: false,
       isNew: false);
 
-class HRSystem {
+class AdmissionSystem {
   final List<Book> allBooks = [];
   final List<Author> allAuthors = [];
   List<Employee>? allEmployees = [];
   List<AddressType>? addressTypes = [];
   List<Person>? persons = [];
+  bool precondisionsSubmitted = false;
   bool applicationSubmitted = false;
 
   // void addEmployee(Employee employee) {
   //   allEmployees.add(employee);
   // }
+  void setPrecondisionsSubmitted(bool value) {
+    precondisionsSubmitted = value;
+  }
+
   void setApplicationSubmitted(bool value) {
     applicationSubmitted = value;
+  }
+
+  bool getPrecondisionsSubmitted() {
+    return precondisionsSubmitted;
   }
 
   bool getApplicationSubmitted() {

@@ -27,6 +27,7 @@ class _SchoolManagementSystemState extends State<SchoolManagementSystem> {
     _routeParser = TemplateRouteParser(
       allowedPaths: [
         '/apply',
+        '/preconditions',
         '/signin',
         '/authors',
         '/settings',
@@ -48,7 +49,7 @@ class _SchoolManagementSystemState extends State<SchoolManagementSystem> {
         '/#access_token',
       ],
       guard: _guard,
-      initialRoute: '/apply',
+      initialRoute: '/preconditions',
     );
 
     _routeState = RouteState(_routeParser);
@@ -95,19 +96,25 @@ class _SchoolManagementSystemState extends State<SchoolManagementSystem> {
   Future<ParsedRoute> _guard(ParsedRoute from) async {
     final signedIn = _auth.getSignedIn();
     final applyRoute = ParsedRoute('/apply', '/apply', {}, {});
+    final preconditionsRoute =
+        ParsedRoute('/preconditions', '/preconditions', {}, {});
     final signInRoute = ParsedRoute('/signin', '/signin', {}, {});
 
     // Go to /apply if the user is not signed in
     log("signed in $signedIn");
-    log("application submitted ${hrSystemInstance.getApplicationSubmitted()}");
-    log("from apply route ${from == applyRoute}\n");
+    log("preconditions submitted ${admissionSystemInstance.getPrecondisionsSubmitted()}");
+    log("from apply route ${from == preconditionsRoute}\n");
     log("from ${from.toString()}\n");
     if (!signedIn &&
-        from != applyRoute &&
-        !hrSystemInstance.getApplicationSubmitted()) {
-      return applyRoute;
-    } else if (hrSystemInstance.getApplicationSubmitted() &&
-        from != applyRoute) {
+        //from != preconditionsRoute &&
+        !admissionSystemInstance.getPrecondisionsSubmitted()) {
+      return preconditionsRoute;
+    } else if (!signedIn &&
+        from != signInRoute &&
+        !admissionSystemInstance.getPrecondisionsSubmitted()) {
+      return signInRoute;
+    } else if (admissionSystemInstance.getPrecondisionsSubmitted() &&
+        from != preconditionsRoute) {
       return ParsedRoute('/authors', '/authors', {}, {});
     }
     // Go to /books if the user is signed in and tries to go to /signin.
@@ -119,7 +126,7 @@ class _SchoolManagementSystemState extends State<SchoolManagementSystem> {
 
   void _handleAuthStateChanged() {
     if (!_auth.getSignedIn()) {
-      _routeState.go('/apply');
+      _routeState.go('/preconditions');
     }
   }
 

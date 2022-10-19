@@ -34,29 +34,33 @@ class AddressTypeListState extends State<AddressTypeList> {
       future: refreshAddressTypeState(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          hrSystemInstance.setAddressTypes(snapshot.data);
+          admissionSystemInstance.setAddressTypes(snapshot.data);
           return ListView.builder(
             itemCount: snapshot.data!.length,
             itemBuilder: (context, index) => ListTile(
               title: Text(
                 snapshot.data![index].name!,
               ),
-              subtitle: Text( ' '
-                    + snapshot.data![index].name! + ' '
-                    + snapshot.data![index].description! + ' '
-,
+              subtitle: Text(
+                ' ' +
+                    snapshot.data![index].name! +
+                    ' ' +
+                    snapshot.data![index].description! +
+                    ' ',
               ),
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   IconButton(
                       onPressed: () async {
-                        Navigator.of(context).push<void>(
-                          MaterialPageRoute<void>(
-                            builder: (context) => EditAddressTypePage(addressType: snapshot.data![index]),
-                          ),
-                        )
-                        .then((value) => setState(() {}));
+                        Navigator.of(context)
+                            .push<void>(
+                              MaterialPageRoute<void>(
+                                builder: (context) => EditAddressTypePage(
+                                    addressType: snapshot.data![index]),
+                              ),
+                            )
+                            .then((value) => setState(() {}));
                       },
                       icon: const Icon(Icons.edit)),
                   IconButton(
@@ -112,10 +116,10 @@ class AddAddressTypePage extends StatefulWidget {
 class _AddAddressTypePageState extends State<AddAddressTypePage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-      late TextEditingController _name_Controller;
-      late FocusNode _name_FocusNode;
-      late TextEditingController _description_Controller;
-      late FocusNode _description_FocusNode;
+  late TextEditingController _name_Controller;
+  late FocusNode _name_FocusNode;
+  late TextEditingController _description_Controller;
+  late FocusNode _description_FocusNode;
 
   @override
   void initState() {
@@ -215,25 +219,25 @@ class _AddAddressTypePageState extends State<AddAddressTypePage> {
 class EditAddressTypePage extends StatefulWidget {
   static const String route = 'address_type/edit';
   final AddressType addressType;
-  const EditAddressTypePage({super.key, 
-    required this.addressType});
+  const EditAddressTypePage({super.key, required this.addressType});
   @override
   _EditAddressTypePageState createState() => _EditAddressTypePageState();
 }
 
 class _EditAddressTypePageState extends State<EditAddressTypePage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-    late TextEditingController _name_Controller;
-    late FocusNode _name_FocusNode;
-    late TextEditingController _description_Controller;
-    late FocusNode _description_FocusNode;
+  late TextEditingController _name_Controller;
+  late FocusNode _name_FocusNode;
+  late TextEditingController _description_Controller;
+  late FocusNode _description_FocusNode;
   @override
   void initState() {
     super.initState();
     final AddressType addressType = widget.addressType;
     _name_Controller = TextEditingController(text: addressType.name);
     _name_FocusNode = FocusNode();
-    _description_Controller = TextEditingController(text: addressType.description);
+    _description_Controller =
+        TextEditingController(text: addressType.description);
     _description_FocusNode = FocusNode();
   }
 
@@ -259,7 +263,8 @@ class _EditAddressTypePageState extends State<EditAddressTypePage> {
           autovalidateMode: AutovalidateMode.onUserInteraction,
           child: Column(
             children: <Widget>[
-              const Text('Fill in the details of the AddressType you want to edit'),
+              const Text(
+                  'Fill in the details of the AddressType you want to edit'),
               TextFormField(
                 controller: _name_Controller,
                 decoration: const InputDecoration(labelText: 'name'),
@@ -282,8 +287,8 @@ class _EditAddressTypePageState extends State<EditAddressTypePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-                await _editAddressType(context);
-              },
+          await _editAddressType(context);
+        },
         child: const Icon(Icons.save),
       ),
     );
@@ -297,10 +302,10 @@ class _EditAddressTypePageState extends State<EditAddressTypePage> {
     try {
       if (_formKey.currentState!.validate()) {
         final AddressType addressType = AddressType(
-            id: widget.addressType.id,
-            name: _name_Controller.text,
-            description: _description_Controller.text,
-);
+          id: widget.addressType.id,
+          name: _name_Controller.text,
+          description: _description_Controller.text,
+        );
         await updateAddressType(addressType);
         Navigator.of(context).pop(true);
       }

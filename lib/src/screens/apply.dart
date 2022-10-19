@@ -180,7 +180,7 @@ class _ApplyScreenState extends State<ApplyScreen> {
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       await addSudentApplicant(context);
-                      hrSystemInstance.setApplicationSubmitted(true);
+                      admissionSystemInstance.setApplicationSubmitted(true);
                       await routeState.go('/authors');
                     }
                   },
@@ -218,7 +218,7 @@ class _ApplyScreenState extends State<ApplyScreen> {
             email: _email_Controller.text);
         log(person.toJson().toString());
         final createPersonResponse = await createPerson(person);
-        log(createPersonResponse.toString());
+        log(createPersonResponse.body.toString());
         //Navigator.of(context).pop(true);
 
       } else {

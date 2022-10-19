@@ -15,7 +15,7 @@ class AuthorsScreen extends StatelessWidget {
           title: Text(title),
         ),
         body: AuthorList(
-          authors: hrSystemInstance.allAuthors,
+          authors: admissionSystemInstance.allAuthors,
           onTap: (author) {
             RouteStateScope.of(context).go('/author/${author.id}');
           },

@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:ShoolManagementSystem/src/screens/apply.dart';
+import 'package:ShoolManagementSystem/src/screens/preconditions.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 
@@ -31,6 +32,7 @@ class SMSNavigator extends StatefulWidget {
 
 class _SMSNavigatorState extends State<SMSNavigator> {
   final _applyKey = const ValueKey('Apply');
+  final _preconditionsKey = const ValueKey('Preconditions');
   final _signInKey = const ValueKey('Sign in');
   final _scaffoldKey = const ValueKey('App scaffold');
   final _bookDetailsKey = const ValueKey('Book details screen');
@@ -46,27 +48,29 @@ class _SMSNavigatorState extends State<SMSNavigator> {
 
     Book? selectedBook;
     if (pathTemplate == '/book/:bookId') {
-      selectedBook = hrSystemInstance.allBooks.firstWhereOrNull(
+      selectedBook = admissionSystemInstance.allBooks.firstWhereOrNull(
           (b) => b.id.toString() == routeState.route.parameters['bookId']);
     }
 
     Author? selectedAuthor;
     if (pathTemplate == '/author/:authorId') {
-      selectedAuthor = hrSystemInstance.allAuthors.firstWhereOrNull(
+      selectedAuthor = admissionSystemInstance.allAuthors.firstWhereOrNull(
           (b) => b.id.toString() == routeState.route.parameters['authorId']);
     }
 
     Employee? selectedEmployee;
     if (pathTemplate == '/employee/:employeeId') {
-      selectedEmployee = hrSystemInstance.allEmployees?.firstWhereOrNull((e) =>
-          e.employee_id.toString() ==
-          routeState.route.parameters['employeeId']);
+      selectedEmployee = admissionSystemInstance.allEmployees?.firstWhereOrNull(
+          (e) =>
+              e.employee_id.toString() ==
+              routeState.route.parameters['employeeId']);
     }
 
     AddressType? selectedAddressType;
     if (pathTemplate == '/address_type/:id') {
-      selectedAddressType = hrSystemInstance.addressTypes?.firstWhereOrNull(
-          (at) => at.id.toString() == routeState.route.parameters['id']);
+      selectedAddressType = admissionSystemInstance.addressTypes
+          ?.firstWhereOrNull(
+              (at) => at.id.toString() == routeState.route.parameters['id']);
     }
 
     if (pathTemplate == '/#access_token') {
@@ -107,6 +111,20 @@ class _SMSNavigatorState extends State<SMSNavigator> {
           FadeTransitionPage<void>(
             key: _applyKey,
             child: ApplyScreen(
+                // onApply: (credentials) async {
+                //   var signedIn = await authState.signIn(
+                //       credentials.username, credentials.password);
+                //   if (signedIn) {
+                //     await routeState.go('/books/popular');
+                //   }
+                // },
+                ),
+          )
+        else if (routeState.route.pathTemplate == '/preconditions')
+          // Display the sign in screen.
+          FadeTransitionPage<void>(
+            key: _preconditionsKey,
+            child: PreconditionsScreen(
                 // onApply: (credentials) async {
                 //   var signedIn = await authState.signIn(
                 //       credentials.username, credentials.password);

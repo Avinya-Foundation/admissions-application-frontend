@@ -29,7 +29,7 @@ class EmployeeListState extends State<EmployeeList> {
       future: futureEmployees,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          hrSystemInstance.setEmployees(snapshot.data);
+          admissionSystemInstance.setEmployees(snapshot.data);
           return ListView.builder(
             itemCount: snapshot.data!.length,
             itemBuilder: (context, index) => ListTile(
