@@ -28,8 +28,10 @@ class AdmissionSystem {
   List<Employee>? allEmployees = [];
   List<AddressType>? addressTypes = [];
   List<Person>? persons = [];
+  List<Vacancy>? vacancies = [];
   bool precondisionsSubmitted = false;
   bool applicationSubmitted = false;
+  final String schoolName = 'Bandaragama';
 
   // void addEmployee(Employee employee) {
   //   allEmployees.add(employee);
@@ -50,6 +52,10 @@ class AdmissionSystem {
     return applicationSubmitted;
   }
 
+  String getSchoolName() {
+    return schoolName;
+  }
+
   void setEmployees(List<Employee>? employees) {
     allEmployees = employees;
   }
@@ -60,6 +66,10 @@ class AdmissionSystem {
 
   void setPersons(List<Person>? persons) {
     this.persons = persons;
+  }
+
+  void setVacancies(List<Vacancy>? vacancies) {
+    this.vacancies = vacancies;
   }
 
   void addPerson(Person person) {

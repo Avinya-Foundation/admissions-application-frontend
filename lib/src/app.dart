@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:ShoolManagementSystem/src/data/library.dart';
+import 'package:ShoolManagementSystem/src/data/admission_system.dart';
 import 'package:flutter/material.dart';
 
 import 'auth.dart';
@@ -26,9 +26,10 @@ class _SchoolManagementSystemState extends State<SchoolManagementSystem> {
     /// Configure the parser with all of the app's allowed path templates.
     _routeParser = TemplateRouteParser(
       allowedPaths: [
-        '/apply',
         '/preconditions',
         '/signin',
+        '/apply',
+        '/tests/logical',
         '/authors',
         '/settings',
         '/books/new',
@@ -100,18 +101,23 @@ class _SchoolManagementSystemState extends State<SchoolManagementSystem> {
         ParsedRoute('/preconditions', '/preconditions', {}, {});
     final signInRoute = ParsedRoute('/signin', '/signin', {}, {});
 
+    final testsRoute = ParsedRoute('/tests/logical', '/tests/logical', {}, {});
+
     // Go to /apply if the user is not signed in
     log("signed in $signedIn");
     log("preconditions submitted ${admissionSystemInstance.getPrecondisionsSubmitted()}");
-    log("from apply route ${from == preconditionsRoute}\n");
+    log("from preconditions route ${from == preconditionsRoute}\n");
     log("from ${from.toString()}\n");
     if (!signedIn &&
         //from != preconditionsRoute &&
         !admissionSystemInstance.getPrecondisionsSubmitted()) {
       return preconditionsRoute;
     } else if (!signedIn &&
-        from != signInRoute &&
-        !admissionSystemInstance.getPrecondisionsSubmitted()) {
+        admissionSystemInstance.getPrecondisionsSubmitted() &&
+        from == testsRoute) {
+      return testsRoute;
+    } else if (!signedIn &&
+        admissionSystemInstance.getPrecondisionsSubmitted()) {
       return signInRoute;
     } else if (admissionSystemInstance.getPrecondisionsSubmitted() &&
         from != preconditionsRoute) {

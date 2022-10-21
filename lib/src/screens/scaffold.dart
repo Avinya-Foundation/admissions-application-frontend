@@ -6,6 +6,17 @@ import '../auth.dart';
 import 'scaffold_body.dart';
 
 class SMSScaffold extends StatelessWidget {
+  static const pageNames = [
+    '/tests/logical',
+    '/books/popular',
+    '/authors',
+    // '/address_types/popular',
+    // '/organizations/popular',
+    // '/branches/popular',
+    // '/offices/popular',
+    // '/job_bands/popular',
+  ];
+
   const SMSScaffold({
     super.key,
   });
@@ -19,7 +30,7 @@ class SMSScaffold extends StatelessWidget {
       body: AdaptiveNavigationScaffold(
         selectedIndex: selectedIndex,
         appBar: AppBar(
-          title: const Text('Avinya Foundation - HRMS - Admin Portal'),
+          title: const Text('Avinya Acadamy - Admissions - Application Portal'),
           actions: <Widget>[
             IconButton(
               icon: const Icon(Icons.logout),
@@ -55,13 +66,13 @@ class SMSScaffold extends StatelessWidget {
         ),
         body: const SMSScaffoldBody(),
         onDestinationSelected: (idx) {
-          if (idx == 0) routeState.go('/books/popular');
-          if (idx == 1) routeState.go('/authors');
-          if (idx == 2) routeState.go('/settings');
-          if (idx == 3) routeState.go('/employees/popular');
-          if (idx == 4) routeState.go('/address_types/popular');
+          routeState.go(pageNames[idx]);
         },
         destinations: const [
+          AdaptiveScaffoldDestination(
+            title: 'Tests',
+            icon: Icons.text_snippet,
+          ),
           AdaptiveScaffoldDestination(
             title: 'Books',
             icon: Icons.book,
@@ -88,11 +99,10 @@ class SMSScaffold extends StatelessWidget {
   }
 
   int _getSelectedIndex(String pathTemplate) {
-    if (pathTemplate.startsWith('/books')) return 0;
-    if (pathTemplate == '/authors') return 1;
-    if (pathTemplate == '/settings') return 2;
-    if (pathTemplate == '/employees') return 3;
-    if (pathTemplate == '/address_types') return 4;
-    return 0;
+    int index = pageNames.indexOf(pathTemplate);
+    if (index >= 0)
+      return index;
+    else
+      return 0;
   }
 }

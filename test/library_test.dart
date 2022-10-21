@@ -1,4 +1,4 @@
-import 'package:ShoolManagementSystem/src/data/library.dart';
+import 'package:ShoolManagementSystem/src/data/admission_system.dart';
 import 'package:test/test.dart';
 
 void main() {

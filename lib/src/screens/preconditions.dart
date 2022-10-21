@@ -119,7 +119,8 @@ class _PreconditionsScreenState extends State<PreconditionsScreen> {
                 Center(
                   child: SingleChildScrollView(
                     child: Html(
-                      data: """
+                      data:
+                          """
                 <div>
                 <h1>Avinya Acadamy Student Admissions</h1>
                 <p>Avinya Acadamy is a school that is dedicated to providing a high quality 
@@ -430,9 +431,9 @@ class _PreconditionsScreenState extends State<PreconditionsScreen> {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('Processing Data')),
                         );
-                        //await addSudentApplicant(context);
-                        admissionSystemInstance.setPrecondisionsSubmitted(true);
-                        await routeState.go('/signin');
+                        await addSudentApplicant(context);
+
+                        await routeState.go('/tests/logical');
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
@@ -491,16 +492,17 @@ class _PreconditionsScreenState extends State<PreconditionsScreen> {
         log('addSudentApplicant valid');
         log(_phone_Controller.text);
         log(phoneMaskTextInputFormatter.getUnmaskedText());
-        final Person person = Person(
-            record_type: 'person',
-            full_name: _full_name_Controller.text,
-            preferred_name: _preferred_name_Controller.text,
-            sex: gender,
-            phone: int.parse(phoneMaskTextInputFormatter.getUnmaskedText()),
-            email: _email_Controller.text);
-        log(person.toJson().toString());
-        final createPersonResponse = await createPerson(person);
-        log(createPersonResponse.body.toString());
+        admissionSystemInstance.setPrecondisionsSubmitted(true);
+        // final Person person = Person(
+        //     record_type: 'person',
+        //     full_name: _full_name_Controller.text,
+        //     preferred_name: _preferred_name_Controller.text,
+        //     sex: gender,
+        //     phone: int.parse(phoneMaskTextInputFormatter.getUnmaskedText()),
+        //     email: _email_Controller.text);
+        //log(person.toJson().toString());
+        //final createPersonResponse = await createPerson(person);
+        //log(createPersonResponse.body.toString());
         //Navigator.of(context).pop(true);
 
       } else {

@@ -1,3 +1,4 @@
+import 'package:ShoolManagementSystem/src/screens/vacancys.dart';
 import 'package:flutter/material.dart';
 
 import '../routing.dart';
@@ -27,7 +28,12 @@ class SMSScaffoldBody extends StatelessWidget {
       key: navigatorKey,
       onPopPage: (route, dynamic result) => route.didPop(result),
       pages: [
-        if (currentRoute.pathTemplate.startsWith('/authors'))
+        if (currentRoute.pathTemplate.startsWith('/tests'))
+          const FadeTransitionPage<void>(
+            key: ValueKey('tests'),
+            child: VacancyScreen(),
+          )
+        else if (currentRoute.pathTemplate.startsWith('/authors'))
           const FadeTransitionPage<void>(
             key: ValueKey('authors'),
             child: AuthorsScreen(),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../data/library.dart';
+import '../data/admission_system.dart';
 import '../routing.dart';
 import '../widgets/author_list.dart';
 
