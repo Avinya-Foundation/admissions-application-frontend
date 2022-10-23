@@ -65,7 +65,7 @@ class Vacancy {
       };
 }
 
-Future<List<Vacancy>> fetchVacancys() async {
+Future<List<Vacancy>> fetchVacancies() async {
   final response = await http.get(
     Uri.parse(AppConfig.admissionsApplicationBffApiUrl +
         '/student_vacancies/' +
@@ -87,75 +87,5 @@ Future<List<Vacancy>> fetchVacancys() async {
     return vacancys;
   } else {
     throw Exception('Failed to load Vacancy');
-  }
-}
-
-Future<Vacancy> fetchVacancy(String id) async {
-  final response = await http.get(
-    Uri.parse(
-        AppConfig.admissionsApplicationBffApiUrl + '/vacancy/vacancys/$id'),
-    headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-      'accept': 'application/json',
-      'API-Key': AppConfig.admissionsApplicationBffApiKey,
-    },
-  );
-
-  if (response.statusCode == 200) {
-    var resultsJson = json.decode(response.body).cast<Map<String, dynamic>>();
-    Vacancy vacancy =
-        await resultsJson.map<Vacancy>((json) => Vacancy.fromJson(json));
-    return vacancy;
-  } else {
-    throw Exception('Failed to load Vacancy');
-  }
-}
-
-Future<http.Response> createVacancy(Vacancy vacancy) async {
-  final response = await http.post(
-    Uri.parse(AppConfig.admissionsApplicationBffApiUrl + '/vacancy/vacancys'),
-    headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-      'API-Key': AppConfig.admissionsApplicationBffApiKey,
-    },
-    body: jsonEncode(vacancy.toJson()),
-  );
-  if (response.statusCode == 200) {
-    return response;
-  } else {
-    throw Exception('Failed to create Vacancy.');
-  }
-}
-
-Future<http.Response> updateVacancy(Vacancy vacancy) async {
-  final response = await http.put(
-    Uri.parse(AppConfig.admissionsApplicationBffApiUrl + '/vacancy/vacancys'),
-    headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-      'API-Key': AppConfig.admissionsApplicationBffApiKey,
-    },
-    body: jsonEncode(vacancy.toJson()),
-  );
-  if (response.statusCode == 200) {
-    return response;
-  } else {
-    throw Exception('Failed to update Vacancy.');
-  }
-}
-
-Future<http.Response> deleteVacancy(String id) async {
-  final http.Response response = await http.delete(
-    Uri.parse(
-        AppConfig.admissionsApplicationBffApiUrl + '/vacancy/vacancys/$id'),
-    headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-      'API-Key': AppConfig.admissionsApplicationBffApiKey,
-    },
-  );
-
-  if (response.statusCode == 200) {
-    return response;
-  } else {
-    throw Exception('Failed to delete Vacancy.');
   }
 }

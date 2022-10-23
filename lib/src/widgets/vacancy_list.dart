@@ -20,11 +20,11 @@ class VacancyListState extends State<VacancyList> {
   @override
   void initState() {
     super.initState();
-    futureVacancys = fetchVacancys();
+    futureVacancys = fetchVacancies();
   }
 
   Future<List<Vacancy>> refreshVacancyState() async {
-    futureVacancys = fetchVacancys();
+    futureVacancys = fetchVacancies();
     return futureVacancys;
   }
 
@@ -70,19 +70,19 @@ class VacancyListState extends State<VacancyList> {
                 children: [
                   IconButton(
                       onPressed: () async {
-                        Navigator.of(context)
-                            .push<void>(
-                              MaterialPageRoute<void>(
-                                builder: (context) => EditVacancyPage(
-                                    vacancy: snapshot.data![index]),
-                              ),
-                            )
-                            .then((value) => setState(() {}));
+                        // Navigator.of(context)
+                        //     .push<void>(
+                        //       MaterialPageRoute<void>(
+                        //         builder: (context) => EditVacancyPage(
+                        //             vacancy: snapshot.data![index]),
+                        //       ),
+                        //     )
+                        //     .then((value) => setState(() {}));
                       },
                       icon: const Icon(Icons.edit)),
                   IconButton(
                       onPressed: () async {
-                        await _deleteVacancy(snapshot.data![index]);
+                        //await _deleteVacancy(snapshot.data![index]);
                         setState(() {});
                       },
                       icon: const Icon(Icons.delete)),
@@ -99,27 +99,6 @@ class VacancyListState extends State<VacancyList> {
         return const CircularProgressIndicator();
       },
     );
-  }
-
-  Future<void> _deleteVacancy(Vacancy vacancy) async {
-    try {
-      await deleteVacancy(vacancy.id!.toString());
-    } on Exception {
-      await showDialog(
-        context: context,
-        builder: (_) => AlertDialog(
-          content: const Text('Failed to delete the Vacancy'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('OK'),
-            )
-          ],
-        ),
-      );
-    }
   }
 }
 
@@ -278,7 +257,7 @@ class _AddVacancyPageState extends State<AddVacancyPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          await _addVacancy(context);
+          //await _addVacancy(context);
         },
         child: const Icon(Icons.save),
       ),
@@ -289,39 +268,40 @@ class _AddVacancyPageState extends State<AddVacancyPage> {
     return (text!.isEmpty) ? 'Required' : null;
   }
 
-  Future<void> _addVacancy(BuildContext context) async {
-    try {
-      if (_formKey.currentState!.validate()) {
-        final Vacancy vacancy = Vacancy(
-          name: _name_Controller.text,
-          description: _description_Controller.text,
-          organization_id: int.parse(_organization_id_Controller.text),
-          avinya_type_id: int.parse(_avinya_type_id_Controller.text),
-          evaluation_cycle_id: int.parse(_evaluation_cycle_id_Controller.text),
-          head_count: int.parse(_head_count_Controller.text),
-          //avinya_type: _avinya_type_Controller.text,
-          //evaluation_criteria: _evaluation_criteria_Controller.text,
-        );
-        await createVacancy(vacancy);
-        Navigator.of(context).pop(true);
-      }
-    } on Exception {
-      await showDialog(
-        context: context,
-        builder: (_) => AlertDialog(
-          content: const Text('Failed to add Vacancy'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('OK'),
-            )
-          ],
-        ),
-      );
-    }
-  }
+//   Future<void> _addVacancy(BuildContext context) async {
+//     try {
+//       if (_formKey.currentState!.validate()) {
+//         final Vacancy vacancy = Vacancy(
+//           name: _name_Controller.text,
+//           description: _description_Controller.text,
+//           organization_id: int.parse(_organization_id_Controller.text),
+//           avinya_type_id: int.parse(_avinya_type_id_Controller.text),
+//           evaluation_cycle_id: int.parse(_evaluation_cycle_id_Controller.text),
+//           head_count: int.parse(_head_count_Controller.text),
+//           //avinya_type: _avinya_type_Controller.text,
+//           //evaluation_criteria: _evaluation_criteria_Controller.text,
+//         );
+//         //await createVacancy(vacancy);
+//         Navigator.of(context).pop(true);
+//       }
+//     } on Exception {
+//       await showDialog(
+//         context: context,
+//         builder: (_) => AlertDialog(
+//           content: const Text('Failed to add Vacancy'),
+//           actions: <Widget>[
+//             TextButton(
+//               onPressed: () {
+//                 Navigator.of(context).pop();
+//               },
+//               child: const Text('OK'),
+//             )
+//           ],
+//         ),
+//       );
+//     }
+//   }
+// }
 }
 
 class EditVacancyPage extends StatefulWidget {
@@ -485,7 +465,7 @@ class _EditVacancyPageState extends State<EditVacancyPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          await _editVacancy(context);
+          //await _editVacancy(context);
         },
         child: const Icon(Icons.save),
       ),
@@ -496,38 +476,38 @@ class _EditVacancyPageState extends State<EditVacancyPage> {
     return (text!.isEmpty) ? 'Required' : null;
   }
 
-  Future<void> _editVacancy(BuildContext context) async {
-    try {
-      if (_formKey.currentState!.validate()) {
-        final Vacancy vacancy = Vacancy(
-          id: widget.vacancy.id,
-          name: _name_Controller.text,
-          description: _description_Controller.text,
-          organization_id: int.parse(_organization_id_Controller.text),
-          avinya_type_id: int.parse(_avinya_type_id_Controller.text),
-          evaluation_cycle_id: int.parse(_evaluation_cycle_id_Controller.text),
-          head_count: int.parse(_head_count_Controller.text),
-          // avinya_type: _avinya_type_Controller.text,
-          // evaluation_criteria: _evaluation_criteria_Controller.text,
-        );
-        await updateVacancy(vacancy);
-        Navigator.of(context).pop(true);
-      }
-    } on Exception {
-      await showDialog(
-        context: context,
-        builder: (_) => AlertDialog(
-          content: const Text('Failed to edit the Vacancy'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('OK'),
-            )
-          ],
-        ),
-      );
-    }
-  }
+  // Future<void> _editVacancy(BuildContext context) async {
+  //   try {
+  //     if (_formKey.currentState!.validate()) {
+  //       final Vacancy vacancy = Vacancy(
+  //         id: widget.vacancy.id,
+  //         name: _name_Controller.text,
+  //         description: _description_Controller.text,
+  //         organization_id: int.parse(_organization_id_Controller.text),
+  //         avinya_type_id: int.parse(_avinya_type_id_Controller.text),
+  //         evaluation_cycle_id: int.parse(_evaluation_cycle_id_Controller.text),
+  //         head_count: int.parse(_head_count_Controller.text),
+  //         // avinya_type: _avinya_type_Controller.text,
+  //         // evaluation_criteria: _evaluation_criteria_Controller.text,
+  //       );
+  //       //await updateVacancy(vacancy);
+  //       Navigator.of(context).pop(true);
+  //     }
+  //   } on Exception {
+  //     await showDialog(
+  //       context: context,
+  //       builder: (_) => AlertDialog(
+  //         content: const Text('Failed to edit the Vacancy'),
+  //         actions: <Widget>[
+  //           TextButton(
+  //             onPressed: () {
+  //               Navigator.of(context).pop();
+  //             },
+  //             child: const Text('OK'),
+  //           )
+  //         ],
+  //       ),
+  //     );
+  //   }
+  // }
 }

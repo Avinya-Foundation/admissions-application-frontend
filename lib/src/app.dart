@@ -26,6 +26,8 @@ class _SchoolManagementSystemState extends State<SchoolManagementSystem> {
     /// Configure the parser with all of the app's allowed path templates.
     _routeParser = TemplateRouteParser(
       allowedPaths: [
+        '/subscribe',
+        '/subscribed_thankyou',
         '/preconditions',
         '/signin',
         '/apply',
@@ -97,6 +99,10 @@ class _SchoolManagementSystemState extends State<SchoolManagementSystem> {
   Future<ParsedRoute> _guard(ParsedRoute from) async {
     final signedIn = _auth.getSignedIn();
     //final applyRoute = ParsedRoute('/apply', '/apply', {}, {});
+    final subscribeRoute = ParsedRoute('/subscribe', '/subscribe', {}, {});
+    final subscribedThankyouRoute =
+        ParsedRoute('/subscribed_thankyou', '/subscribed_thankyou', {}, {});
+
     final preconditionsRoute =
         ParsedRoute('/preconditions', '/preconditions', {}, {});
     final signInRoute = ParsedRoute('/signin', '/signin', {}, {});
@@ -108,7 +114,11 @@ class _SchoolManagementSystemState extends State<SchoolManagementSystem> {
     log("preconditions submitted ${admissionSystemInstance.getPrecondisionsSubmitted()}");
     log("from preconditions route ${from == preconditionsRoute}\n");
     log("from ${from.toString()}\n");
-    if (!signedIn &&
+    if (!signedIn && from == subscribeRoute) {
+      return subscribeRoute;
+    } else if (!signedIn && from == subscribedThankyouRoute) {
+      return subscribedThankyouRoute;
+    } else if (!signedIn &&
         //from != preconditionsRoute &&
         !admissionSystemInstance.getPrecondisionsSubmitted()) {
       return preconditionsRoute;

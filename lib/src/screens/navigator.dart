@@ -2,6 +2,8 @@ import 'dart:developer';
 
 import 'package:ShoolManagementSystem/src/screens/apply.dart';
 import 'package:ShoolManagementSystem/src/screens/preconditions.dart';
+import 'package:ShoolManagementSystem/src/screens/subscribe.dart';
+import 'package:ShoolManagementSystem/src/screens/subscribed_thankyou.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 
@@ -32,6 +34,8 @@ class SMSNavigator extends StatefulWidget {
 
 class _SMSNavigatorState extends State<SMSNavigator> {
   final _applyKey = const ValueKey('Apply');
+  final _subscribeKey = const ValueKey('Subscribe');
+  final _subscribedThankyouKey = const ValueKey('Subscribed Thankyou');
   final _preconditionsKey = const ValueKey('Preconditions');
   final _signInKey = const ValueKey('Sign in');
   final _testsKey = const ValueKey('Tests');
@@ -125,6 +129,18 @@ class _SMSNavigatorState extends State<SMSNavigator> {
                 //   }
                 // },
                 ),
+          )
+        else if (routeState.route.pathTemplate == '/subscribe')
+          // Display the sign in screen.
+          FadeTransitionPage<void>(
+            key: _subscribeKey,
+            child: SubscribeScreen(),
+          )
+        else if (routeState.route.pathTemplate == '/subscribed_thankyou')
+          // Display the sign in screen.
+          FadeTransitionPage<void>(
+            key: _subscribedThankyouKey,
+            child: SubscribedThankyouScreen(),
           )
         else if (routeState.route.pathTemplate == '/preconditions')
           // Display the sign in screen.
