@@ -60,7 +60,6 @@ Future<http.Response> createProspect(Prospect prospect) async {
     Uri.parse(AppConfig.admissionsApplicationBffApiUrl + '/prospect'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
-      'API-Key': AppConfig.admissionsApplicationBffApiKey,
     },
     body: jsonEncode(prospect.toJson()),
   );
