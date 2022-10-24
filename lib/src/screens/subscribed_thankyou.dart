@@ -1,3 +1,4 @@
+import 'package:ShoolManagementSystem/src/data/prospect.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -5,8 +6,9 @@ import 'package:flutter_html/flutter_html.dart';
 
 class SubscribedThankyouScreen extends StatefulWidget {
   static const String route = 'subscribed_thankyou';
-  // final AddressType addressType;
-  const SubscribedThankyouScreen({super.key});
+  final Prospect? prospect;
+
+  const SubscribedThankyouScreen({super.key, this.prospect});
   @override
   _SubscribedThankyouScreenState createState() =>
       _SubscribedThankyouScreenState();
