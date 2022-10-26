@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 import '../data.dart';
@@ -12,8 +14,45 @@ class VacancyList extends StatefulWidget {
 }
 
 class VacancyListState extends State<VacancyList> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late Future<List<Vacancy>> futureVacancys;
   final ValueChanged<Vacancy>? onTap;
+  final textController1 = TextEditingController();
+  final textController2 = TextEditingController();
+  var lengths = [0, 0];
+  var answers = [
+    'Essay',
+    'Essay',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    ''
+  ];
+  var criteriaIds = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+  bool doneOL = false;
+
+  _onChanged0(String value) {
+    setState(() {
+      lengths[0] = value.length;
+      answers[0] = value;
+    });
+  }
+
+  _onChanged1(String value) {
+    setState(() {
+      lengths[1] = value.length;
+      answers[1] = value;
+    });
+  }
 
   VacancyListState(this.onTap);
 
@@ -21,10 +60,12 @@ class VacancyListState extends State<VacancyList> {
   void initState() {
     super.initState();
     futureVacancys = fetchVacancies();
+    admissionSystemInstance.setVacancies(futureVacancys);
   }
 
   Future<List<Vacancy>> refreshVacancyState() async {
-    futureVacancys = fetchVacancies();
+    //futureVacancys = fetchVacancies();
+    futureVacancys = admissionSystemInstance.getVacancies();
     return futureVacancys;
   }
 
@@ -34,63 +75,248 @@ class VacancyListState extends State<VacancyList> {
       future: refreshVacancyState(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          admissionSystemInstance.setVacancies(snapshot.data);
-          return ListView.builder(
-            itemCount: snapshot.data!.length,
-            itemBuilder: (context, index) => ListTile(
-              title: Text(
-                snapshot.data![index].name!,
-              ),
-              subtitle: Text(
-                ' ' +
-                    snapshot.data![index].name! +
-                    ' ' +
-                    snapshot.data![index].description! +
-                    ' ' +
-                    // snapshot.data![index].organization_id!.toString() +
-                    // ' ' +
-                    // snapshot.data![index].avinya_type_id!.toString() +
-                    // ' ' +
-                    // snapshot.data![index].evaluation_cycle_id!.toString() +
-                    // ' ' +
-                    snapshot.data![index].head_count!.toString() +
-                    ' ' +
-                    snapshot.data![index].avinya_type!.name! +
-                    snapshot.data![index].evaluation_criteria
-                        .map((e) => e.prompt)
-                        .toList()
-                        .toString() +
-                    snapshot.data![index].avinya_type!.toString() +
-                    ' ' +
-                    // snapshot.data![index].evaluation_criteria.toString() +
-                    ' ',
-              ),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  IconButton(
-                      onPressed: () async {
-                        // Navigator.of(context)
-                        //     .push<void>(
-                        //       MaterialPageRoute<void>(
-                        //         builder: (context) => EditVacancyPage(
-                        //             vacancy: snapshot.data![index]),
-                        //       ),
-                        //     )
-                        //     .then((value) => setState(() {}));
-                      },
-                      icon: const Icon(Icons.edit)),
-                  IconButton(
-                      onPressed: () async {
-                        //await _deleteVacancy(snapshot.data![index]);
-                        setState(() {});
-                      },
-                      icon: const Icon(Icons.delete)),
-                ],
-              ),
-              onTap: onTap != null ? () => onTap!(snapshot.data![index]) : null,
-            ),
+          //admissionSystemInstance.setVacancies(snapshot.data);
+          List<Vacancy>? vacancies = snapshot.data;
+          return Padding(
+            padding: const EdgeInsets.all(16),
+            child: Form(
+                key: _formKey,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                child: SingleChildScrollView(
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          'Tests for admission to the school',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Column(
+                          children: vacancies!
+                              .map((vacancy) => Column(
+                                  children: vacancy.evaluation_criteria
+                                      .map((ec) => Row(children: [
+                                            Column(children: [
+                                              if ((criteriaIds[vacancy
+                                                      .evaluation_criteria
+                                                      .indexOf(ec)] = ec.id!) >
+                                                  0)
+                                                Text(ec.prompt!),
+                                              if (ec.evalualtion_type ==
+                                                  'Essay')
+                                                if (vacancy.evaluation_criteria
+                                                            .indexOf(ec) %
+                                                        2 ==
+                                                    0)
+                                                  Container(
+                                                      width: 380,
+                                                      height: 300,
+                                                      padding:
+                                                          EdgeInsets.all(8.0),
+                                                      child: TextField(
+                                                        controller:
+                                                            textController1,
+                                                        autocorrect: true,
+                                                        decoration: InputDecoration(
+                                                            hintText:
+                                                                'Type your essay here'),
+                                                        onChanged: _onChanged0,
+                                                        maxLength: 640,
+                                                        maxLines: 10,
+                                                      )),
+                                              if (ec.evalualtion_type ==
+                                                  'Essay')
+                                                if (vacancy.evaluation_criteria
+                                                            .indexOf(ec) %
+                                                        2 ==
+                                                    1)
+                                                  Container(
+                                                      width: 380,
+                                                      height: 300,
+                                                      padding:
+                                                          EdgeInsets.all(8.0),
+                                                      child: TextField(
+                                                        controller:
+                                                            textController2,
+                                                        autocorrect: true,
+                                                        decoration: InputDecoration(
+                                                            hintText:
+                                                                'Type your essay here'),
+                                                        onChanged: _onChanged1,
+                                                        maxLength: 640,
+                                                        maxLines: 10,
+                                                      )),
+                                              if (ec.evalualtion_type ==
+                                                  'Essay')
+                                                Text(lengths[0].toString() +
+                                                    '/' +
+                                                    lengths[1].toString() +
+                                                    '/' +
+                                                    vacancy.evaluation_criteria
+                                                        .indexOf(ec)
+                                                        .toString()),
+                                              if (ec.evalualtion_type ==
+                                                  'Multiple Choice')
+                                                Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: <Widget>[
+                                                      Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: ec
+                                                              .answer_options
+                                                              .map((option) =>
+                                                                  Row(
+                                                                      children: [
+                                                                        SizedBox(
+                                                                          width:
+                                                                              10,
+                                                                          child:
+                                                                              Radio(
+                                                                            value:
+                                                                                option.answer!,
+                                                                            groupValue:
+                                                                                answers[vacancy.evaluation_criteria.indexOf(ec)],
+                                                                            activeColor:
+                                                                                Colors.orange,
+                                                                            onChanged:
+                                                                                (ans) {
+                                                                              //value may be true or false
+                                                                              setState(() {
+                                                                                answers[vacancy.evaluation_criteria.indexOf(ec)] = '${option.answer!}';
+                                                                              });
+                                                                            },
+                                                                          ),
+                                                                        ),
+                                                                        SizedBox(
+                                                                            width:
+                                                                                10.0),
+                                                                        Text(option
+                                                                            .answer!),
+                                                                      ]))
+                                                              .toList()),
+                                                    ]),
+                                              Text(answers[vacancy
+                                                          .evaluation_criteria
+                                                          .indexOf(ec)]
+                                                      .toString() +
+                                                  '//' +
+                                                  criteriaIds[vacancy
+                                                          .evaluation_criteria
+                                                          .indexOf(ec)]
+                                                      .toString() +
+                                                  '//' +
+                                                  vacancy.evaluation_criteria
+                                                      .indexOf(ec)
+                                                      .toString() +
+                                                  '//' +
+                                                  criteriaIds.toString()),
+                                            ]),
+                                          ]))
+                                      .toList()))
+                              .toList(),
+                        ),
+                        SizedBox(width: 10.0, height: 10.0),
+                        ElevatedButton(
+                            onPressed: () async {
+                              if (_formKey.currentState!.validate()) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text('Processing Data')),
+                                );
+                                await addSudentApplicantEvaluation(context);
+
+                                //await routeState.go('/tests/logical');
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text(
+                                      'Some of the data you entred on this form ' +
+                                          'does not meet the eligibility criteria.\r\n' +
+                                          'The errors are shown inline on the form.\r\n' +
+                                          'Please check and correct the data and try again.',
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontStyle: FontStyle.italic,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    behavior: SnackBarBehavior.floating,
+                                    margin: EdgeInsets.only(
+                                        left: 100.0,
+                                        right: 100.0,
+                                        bottom: 100.0),
+                                    duration: Duration(seconds: 5),
+                                    backgroundColor: Colors.yellow,
+                                  ),
+                                );
+                              }
+                            },
+                            child: Text('Submit'))
+                      ]),
+                )),
           );
+
+          //   return ListView.builder(
+          //     itemCount: snapshot.data!.length,
+          //     itemBuilder: (context, index) => ListTile(
+          //       title: Text(
+          //         snapshot.data![index].name!,
+          //       ),
+          //       subtitle: Text(
+          //         ' ' +
+          //             snapshot.data![index].name! +
+          //             ' ' +
+          //             snapshot.data![index].description! +
+          //             ' ' +
+          //             // snapshot.data![index].organization_id!.toString() +
+          //             // ' ' +
+          //             // snapshot.data![index].avinya_type_id!.toString() +
+          //             // ' ' +
+          //             // snapshot.data![index].evaluation_cycle_id!.toString() +
+          //             // ' ' +
+          //             snapshot.data![index].head_count!.toString() +
+          //             ' ' +
+          //             snapshot.data![index].avinya_type!.name! +
+          //             snapshot.data![index].evaluation_criteria
+          //                 .map((e) => e.prompt)
+          //                 .toList()
+          //                 .toString() +
+          //             snapshot.data![index].avinya_type!.toString() +
+          //             ' ' +
+          //             // snapshot.data![index].evaluation_criteria.toString() +
+          //             ' ',
+          //       ),
+          //       trailing: Row(
+          //         mainAxisSize: MainAxisSize.min,
+          //         children: [
+          //           IconButton(
+          //               onPressed: () async {
+          //                 // Navigator.of(context)
+          //                 //     .push<void>(
+          //                 //       MaterialPageRoute<void>(
+          //                 //         builder: (context) => EditVacancyPage(
+          //                 //             vacancy: snapshot.data![index]),
+          //                 //       ),
+          //                 //     )
+          //                 //     .then((value) => setState(() {}));
+          //               },
+          //               icon: const Icon(Icons.edit)),
+          //           IconButton(
+          //               onPressed: () async {
+          //                 //await _deleteVacancy(snapshot.data![index]);
+          //                 setState(() {});
+          //               },
+          //               icon: const Icon(Icons.delete)),
+          //         ],
+          //       ),
+          //       onTap: onTap != null ? () => onTap!(snapshot.data![index]) : null,
+          //     ),
+          //   );
         } else if (snapshot.hasError) {
           return Text('${snapshot.error}');
         }
@@ -99,6 +325,47 @@ class VacancyListState extends State<VacancyList> {
         return const CircularProgressIndicator();
       },
     );
+  }
+
+  Future<void> addSudentApplicantEvaluation(BuildContext context) async {
+    try {
+      if (_formKey.currentState!.validate()) {
+        log('addSudentApplicantEvaluation valid');
+        log(answers.toString());
+        // log(_phone_Controller.text);
+        // log(phoneMaskTextInputFormatter.getUnmaskedText());
+        // admissionSystemInstance.setPrecondisionsSubmitted(true);
+        // final Person person = Person(
+        //     record_type: 'person',
+        //     full_name: _full_name_Controller.text,
+        //     preferred_name: _preferred_name_Controller.text,
+        //     sex: gender,
+        //     phone: int.parse(phoneMaskTextInputFormatter.getUnmaskedText()),
+        //     email: _email_Controller.text);
+        //log(person.toJson().toString());
+        //final createPersonResponse = await createPerson(person);
+        //log(createPersonResponse.body.toString());
+        //Navigator.of(context).pop(true);
+
+      } else {
+        log('addSudentApplicantEvaluation invalid');
+      }
+    } on Exception {
+      await showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          content: const Text('Failed to submit the student application form'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('OK'),
+            )
+          ],
+        ),
+      );
+    }
   }
 }
 

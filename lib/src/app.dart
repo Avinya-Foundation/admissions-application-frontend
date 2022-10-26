@@ -119,13 +119,13 @@ class _SchoolManagementSystemState extends State<SchoolManagementSystem> {
     } else if (!signedIn && from == subscribedThankyouRoute) {
       return subscribedThankyouRoute;
     } else if (!signedIn &&
+        //admissionSystemInstance.getPrecondisionsSubmitted() &&
+        from == testsRoute) {
+      return testsRoute;
+    } else if (!signedIn &&
         //from != preconditionsRoute &&
         !admissionSystemInstance.getPrecondisionsSubmitted()) {
       return preconditionsRoute;
-    } else if (!signedIn &&
-        admissionSystemInstance.getPrecondisionsSubmitted() &&
-        from == testsRoute) {
-      return testsRoute;
     } else if (!signedIn &&
         admissionSystemInstance.getPrecondisionsSubmitted()) {
       return signInRoute;
