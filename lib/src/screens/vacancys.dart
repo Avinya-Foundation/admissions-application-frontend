@@ -43,12 +43,12 @@ class _VacancyScreenState extends State<VacancyScreen>
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
-          title: const Text('Vacancy'),
+          title: const Text('Admission Tests'),
           bottom: TabBar(
             controller: _tabController,
             tabs: const [
               Tab(
-                text: 'All Vacancys',
+                text: 'Essays and Aptitude Test',
                 icon: Icon(Icons.list_alt),
               ),
             ],

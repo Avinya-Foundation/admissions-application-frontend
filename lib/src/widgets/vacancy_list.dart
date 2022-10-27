@@ -20,23 +20,7 @@ class VacancyListState extends State<VacancyList> {
   final textController1 = TextEditingController();
   final textController2 = TextEditingController();
   var lengths = [0, 0];
-  var answers = [
-    'Essay',
-    'Essay',
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
-    ''
-  ];
+  var answers = ['', '', '', '', '', '', '', '', '', '', '', '', '', '', ''];
   var criteriaIds = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
   bool doneOL = false;
 
@@ -87,136 +71,137 @@ class VacancyListState extends State<VacancyList> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          'Tests for admission to the school',
+                          'Please answer all questions below',
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
+                        SizedBox(width: 10.0, height: 10.0),
                         Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: vacancies!
                               .map((vacancy) => Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: vacancy.evaluation_criteria
                                       .map((ec) => Row(children: [
-                                            Column(children: [
-                                              if ((criteriaIds[vacancy
-                                                      .evaluation_criteria
-                                                      .indexOf(ec)] = ec.id!) >
-                                                  0)
-                                                Text(ec.prompt!),
-                                              if (ec.evalualtion_type ==
-                                                  'Essay')
-                                                if (vacancy.evaluation_criteria
-                                                            .indexOf(ec) %
-                                                        2 ==
-                                                    0)
-                                                  Container(
-                                                      width: 380,
-                                                      height: 300,
-                                                      padding:
-                                                          EdgeInsets.all(8.0),
-                                                      child: TextField(
-                                                        controller:
-                                                            textController1,
-                                                        autocorrect: true,
-                                                        decoration: InputDecoration(
-                                                            hintText:
-                                                                'Type your essay here'),
-                                                        onChanged: _onChanged0,
-                                                        maxLength: 640,
-                                                        maxLines: 10,
-                                                      )),
-                                              if (ec.evalualtion_type ==
-                                                  'Essay')
-                                                if (vacancy.evaluation_criteria
-                                                            .indexOf(ec) %
-                                                        2 ==
-                                                    1)
-                                                  Container(
-                                                      width: 380,
-                                                      height: 300,
-                                                      padding:
-                                                          EdgeInsets.all(8.0),
-                                                      child: TextField(
-                                                        controller:
-                                                            textController2,
-                                                        autocorrect: true,
-                                                        decoration: InputDecoration(
-                                                            hintText:
-                                                                'Type your essay here'),
-                                                        onChanged: _onChanged1,
-                                                        maxLength: 640,
-                                                        maxLines: 10,
-                                                      )),
-                                              if (ec.evalualtion_type ==
-                                                  'Essay')
-                                                Text(lengths[0].toString() +
-                                                    '/' +
-                                                    lengths[1].toString() +
-                                                    '/' +
-                                                    vacancy.evaluation_criteria
-                                                        .indexOf(ec)
-                                                        .toString()),
-                                              if (ec.evalualtion_type ==
-                                                  'Multiple Choice')
-                                                Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: <Widget>[
-                                                      Column(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: ec
-                                                              .answer_options
-                                                              .map((option) =>
-                                                                  Row(
-                                                                      children: [
-                                                                        SizedBox(
-                                                                          width:
-                                                                              10,
-                                                                          child:
-                                                                              Radio(
-                                                                            value:
-                                                                                option.answer!,
-                                                                            groupValue:
-                                                                                answers[vacancy.evaluation_criteria.indexOf(ec)],
-                                                                            activeColor:
-                                                                                Colors.orange,
-                                                                            onChanged:
-                                                                                (ans) {
-                                                                              //value may be true or false
-                                                                              setState(() {
-                                                                                answers[vacancy.evaluation_criteria.indexOf(ec)] = '${option.answer!}';
-                                                                              });
-                                                                            },
-                                                                          ),
-                                                                        ),
-                                                                        SizedBox(
-                                                                            width:
-                                                                                10.0),
-                                                                        Text(option
-                                                                            .answer!),
-                                                                      ]))
-                                                              .toList()),
-                                                    ]),
-                                              Text(answers[vacancy
+                                            Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  if ((criteriaIds[vacancy
                                                           .evaluation_criteria
-                                                          .indexOf(ec)]
-                                                      .toString() +
-                                                  '//' +
-                                                  criteriaIds[vacancy
-                                                          .evaluation_criteria
-                                                          .indexOf(ec)]
-                                                      .toString() +
-                                                  '//' +
-                                                  vacancy.evaluation_criteria
-                                                      .indexOf(ec)
-                                                      .toString() +
-                                                  '//' +
-                                                  criteriaIds.toString()),
-                                            ]),
+                                                          .indexOf(
+                                                              ec)] = ec.id!) >
+                                                      0)
+                                                    Text(
+                                                      ec.prompt!,
+                                                      style: TextStyle(
+                                                        fontSize: 15,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                  if (ec.evalualtion_type ==
+                                                      'Essay')
+                                                    if (vacancy.evaluation_criteria
+                                                                .indexOf(ec) %
+                                                            2 ==
+                                                        0)
+                                                      Container(
+                                                          width: 380,
+                                                          height: 300,
+                                                          padding:
+                                                              EdgeInsets.all(
+                                                                  8.0),
+                                                          child: TextField(
+                                                            controller:
+                                                                textController1,
+                                                            autocorrect: true,
+                                                            decoration:
+                                                                InputDecoration(
+                                                                    hintText:
+                                                                        'Type your essay here'),
+                                                            onChanged:
+                                                                _onChanged0,
+                                                            maxLength: 640,
+                                                            maxLines: 10,
+                                                          )),
+                                                  if (ec.evalualtion_type ==
+                                                      'Essay')
+                                                    if (vacancy.evaluation_criteria
+                                                                .indexOf(ec) %
+                                                            2 ==
+                                                        1)
+                                                      Container(
+                                                          width: 380,
+                                                          height: 300,
+                                                          padding:
+                                                              EdgeInsets.all(
+                                                                  8.0),
+                                                          child: TextField(
+                                                            controller:
+                                                                textController2,
+                                                            autocorrect: true,
+                                                            decoration:
+                                                                InputDecoration(
+                                                                    hintText:
+                                                                        'Type your essay here'),
+                                                            onChanged:
+                                                                _onChanged1,
+                                                            maxLength: 640,
+                                                            maxLines: 10,
+                                                          )),
+                                                  if (ec.evalualtion_type ==
+                                                      'Multiple Choice')
+                                                    Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: <Widget>[
+                                                          Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              children: ec
+                                                                  .answer_options
+                                                                  .map((option) =>
+                                                                      Row(
+                                                                          crossAxisAlignment: CrossAxisAlignment
+                                                                              .center,
+                                                                          mainAxisAlignment:
+                                                                              MainAxisAlignment.start,
+                                                                          children: [
+                                                                            Padding(
+                                                                              padding: const EdgeInsets.all(8),
+                                                                              child: SizedBox(
+                                                                                width: 10,
+                                                                                //height: 10,
+                                                                                child: Radio(
+                                                                                  value: option.answer!,
+                                                                                  groupValue: answers[vacancy.evaluation_criteria.indexOf(ec)],
+                                                                                  activeColor: Colors.orange,
+                                                                                  onChanged: (ans) {
+                                                                                    //value may be true or false
+                                                                                    setState(() {
+                                                                                      answers[vacancy.evaluation_criteria.indexOf(ec)] = '${option.answer!}';
+                                                                                    });
+                                                                                  },
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                            // SizedBox(
+                                                                            //   height: 40.0,
+                                                                            // child:
+                                                                            Text(option.answer!),
+                                                                            //),
+                                                                          ]))
+                                                                  .toList()),
+                                                          SizedBox(
+                                                              width: 10.0,
+                                                              height: 10.0),
+                                                        ]),
+                                                ]),
                                           ]))
                                       .toList()))
                               .toList(),
@@ -260,63 +245,6 @@ class VacancyListState extends State<VacancyList> {
                       ]),
                 )),
           );
-
-          //   return ListView.builder(
-          //     itemCount: snapshot.data!.length,
-          //     itemBuilder: (context, index) => ListTile(
-          //       title: Text(
-          //         snapshot.data![index].name!,
-          //       ),
-          //       subtitle: Text(
-          //         ' ' +
-          //             snapshot.data![index].name! +
-          //             ' ' +
-          //             snapshot.data![index].description! +
-          //             ' ' +
-          //             // snapshot.data![index].organization_id!.toString() +
-          //             // ' ' +
-          //             // snapshot.data![index].avinya_type_id!.toString() +
-          //             // ' ' +
-          //             // snapshot.data![index].evaluation_cycle_id!.toString() +
-          //             // ' ' +
-          //             snapshot.data![index].head_count!.toString() +
-          //             ' ' +
-          //             snapshot.data![index].avinya_type!.name! +
-          //             snapshot.data![index].evaluation_criteria
-          //                 .map((e) => e.prompt)
-          //                 .toList()
-          //                 .toString() +
-          //             snapshot.data![index].avinya_type!.toString() +
-          //             ' ' +
-          //             // snapshot.data![index].evaluation_criteria.toString() +
-          //             ' ',
-          //       ),
-          //       trailing: Row(
-          //         mainAxisSize: MainAxisSize.min,
-          //         children: [
-          //           IconButton(
-          //               onPressed: () async {
-          //                 // Navigator.of(context)
-          //                 //     .push<void>(
-          //                 //       MaterialPageRoute<void>(
-          //                 //         builder: (context) => EditVacancyPage(
-          //                 //             vacancy: snapshot.data![index]),
-          //                 //       ),
-          //                 //     )
-          //                 //     .then((value) => setState(() {}));
-          //               },
-          //               icon: const Icon(Icons.edit)),
-          //           IconButton(
-          //               onPressed: () async {
-          //                 //await _deleteVacancy(snapshot.data![index]);
-          //                 setState(() {});
-          //               },
-          //               icon: const Icon(Icons.delete)),
-          //         ],
-          //       ),
-          //       onTap: onTap != null ? () => onTap!(snapshot.data![index]) : null,
-          //     ),
-          //   );
         } else if (snapshot.hasError) {
           return Text('${snapshot.error}');
         }
@@ -332,6 +260,13 @@ class VacancyListState extends State<VacancyList> {
       if (_formKey.currentState!.validate()) {
         log('addSudentApplicantEvaluation valid');
         log(answers.toString());
+        log(criteriaIds.toString());
+        answers.forEach((element) {
+          if (element != '') {
+            log(element);
+            log(criteriaIds[answers.indexOf(element)].toString());
+          }
+        });
         // log(_phone_Controller.text);
         // log(phoneMaskTextInputFormatter.getUnmaskedText());
         // admissionSystemInstance.setPrecondisionsSubmitted(true);
