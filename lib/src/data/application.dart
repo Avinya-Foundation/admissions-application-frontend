@@ -70,7 +70,7 @@ class Application {
         if (person_id != null) 'person_id': person_id,
         if (vacancy_id != null) 'vacancy_id': vacancy_id,
         if (application_date != null) 'application_date': application_date,
-        // 'statuses': [statuses.map((e) => e.toJson()).toList()],
+        //'statuses': [statuses.map((e) => e.toJson()).toList()],
       };
 }
 
@@ -106,10 +106,9 @@ Future<Application> fetchApplication(int id) async {
   );
 
   if (response.statusCode == 200) {
-    var resultsJson = json.decode(response.body).cast<Map<String, dynamic>>();
-    Application applicantConsent = await resultsJson
-        .map<Application>((json) => Application.fromJson(json));
-    return applicantConsent;
+    //var resultsJson = json.decode(response.body).cast<Map<String, dynamic>>();
+    Application application = Application.fromJson(json.decode(response.body));
+    return application;
   } else {
     throw Exception('Failed to load Application');
   }

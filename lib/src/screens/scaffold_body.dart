@@ -1,3 +1,4 @@
+import 'package:ShoolManagementSystem/src/screens/application.dart';
 import 'package:ShoolManagementSystem/src/screens/vacancys.dart';
 import 'package:flutter/material.dart';
 
@@ -32,6 +33,11 @@ class SMSScaffoldBody extends StatelessWidget {
           const FadeTransitionPage<void>(
             key: ValueKey('tests'),
             child: VacancyScreen(),
+          )
+        else if (currentRoute.pathTemplate.startsWith('/application'))
+          const FadeTransitionPage<void>(
+            key: ValueKey('application'),
+            child: ApplicationScreen(),
           )
         else if (currentRoute.pathTemplate.startsWith('/authors'))
           const FadeTransitionPage<void>(
