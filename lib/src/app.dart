@@ -32,6 +32,7 @@ class _SchoolManagementSystemState extends State<SchoolManagementSystem> {
         '/signin',
         '/apply',
         '/tests/logical',
+        '/application',
         '/authors',
         '/settings',
         '/books/new',
@@ -98,7 +99,7 @@ class _SchoolManagementSystemState extends State<SchoolManagementSystem> {
 
   Future<ParsedRoute> _guard(ParsedRoute from) async {
     final signedIn = _auth.getSignedIn();
-    //final applyRoute = ParsedRoute('/apply', '/apply', {}, {});
+    final applyRoute = ParsedRoute('/apply', '/apply', {}, {});
     final subscribeRoute = ParsedRoute('/subscribe', '/subscribe', {}, {});
     final subscribedThankyouRoute =
         ParsedRoute('/subscribed_thankyou', '/subscribed_thankyou', {}, {});
@@ -109,6 +110,9 @@ class _SchoolManagementSystemState extends State<SchoolManagementSystem> {
 
     final testsRoute = ParsedRoute('/tests/logical', '/tests/logical', {}, {});
 
+    final applicationRoute =
+        ParsedRoute('/application', '/application', {}, {});
+
     // Go to /apply if the user is not signed in
     log("signed in $signedIn");
     log("preconditions submitted ${admissionSystemInstance.getPrecondisionsSubmitted()}");
@@ -118,14 +122,14 @@ class _SchoolManagementSystemState extends State<SchoolManagementSystem> {
       return subscribeRoute;
     } else if (!signedIn && from == subscribedThankyouRoute) {
       return subscribedThankyouRoute;
-    } else if (!signedIn &&
-        //admissionSystemInstance.getPrecondisionsSubmitted() &&
-        from == testsRoute) {
-      return testsRoute;
-    } else if (!signedIn &&
-        //from != preconditionsRoute &&
-        !admissionSystemInstance.getPrecondisionsSubmitted()) {
+    } else if (!signedIn && from == preconditionsRoute) {
       return preconditionsRoute;
+    } else if (!signedIn && from == applyRoute) {
+      return applyRoute;
+    } else if (!signedIn && from == testsRoute) {
+      return testsRoute;
+    } else if (!signedIn && from == applicationRoute) {
+      return applicationRoute;
     } else if (!signedIn &&
         admissionSystemInstance.getPrecondisionsSubmitted()) {
       return signInRoute;

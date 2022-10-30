@@ -5,3 +5,4 @@ export 'data/admission_system.dart';
 export 'data/address_type.dart';
 export 'data/person.dart';
 export 'data/vacancy.dart';
+export 'data/application.dart';

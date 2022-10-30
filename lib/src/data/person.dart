@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:ShoolManagementSystem/src/data/address.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -23,6 +24,8 @@ class Person {
   int? organization_id;
   String? asgardeo_id;
   String? email;
+  Address? permanent_address;
+  Address? mailing_address;
 
   Person({
     this.id,
@@ -42,6 +45,8 @@ class Person {
     this.organization_id,
     this.asgardeo_id,
     this.email,
+    this.permanent_address,
+    this.mailing_address,
   });
 
   factory Person.fromJson(Map<String, dynamic> json) {
@@ -63,6 +68,10 @@ class Person {
       organization_id: json['organization_id'],
       asgardeo_id: json['asgardeo_id'],
       email: json['email'],
+      permanent_address: Address.fromJson(
+          json['permanent_address'] != null ? json['permanent_address'] : {}),
+      mailing_address: Address.fromJson(
+          json['mailing_address'] != null ? json['mailing_address'] : {}),
     );
   }
 
@@ -86,6 +95,10 @@ class Person {
         if (organization_id != null) 'organization_id': organization_id,
         if (asgardeo_id != null) 'asgardeo_id': asgardeo_id,
         if (email != null) 'email': email,
+        if (permanent_address != null)
+          'permanent_address': permanent_address!.toJson(),
+        if (mailing_address != null)
+          'mailing_address': mailing_address!.toJson(),
       };
 }
 
@@ -130,7 +143,7 @@ Future<Person> fetchPerson(String id) async {
   }
 }
 
-Future<http.Response> createPerson(Person person) async {
+Future<Person> createPerson(Person person) async {
   final response = await http.post(
     Uri.parse(AppConfig.admissionsApplicationBffApiUrl + '/student_applicant'),
     headers: <String, String>{
@@ -140,7 +153,9 @@ Future<http.Response> createPerson(Person person) async {
     body: jsonEncode(person.toJson()),
   );
   if (response.statusCode == 200) {
-    return response;
+    // var resultsJson = json.decode(response.body).cast<Map<String, dynamic>>();
+    Person person = Person.fromJson(json.decode(response.body));
+    return person;
   } else {
     log(response.body + " Status code =" + response.statusCode.toString());
     throw Exception('Failed to create Person.');

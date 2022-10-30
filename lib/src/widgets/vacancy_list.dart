@@ -1,8 +1,10 @@
 import 'dart:developer';
 
+import 'package:ShoolManagementSystem/src/data/evaluation.dart';
 import 'package:flutter/material.dart';
 
 import '../data.dart';
+import '../routing.dart';
 
 class VacancyList extends StatefulWidget {
   const VacancyList({super.key, this.onTap});
@@ -55,6 +57,7 @@ class VacancyListState extends State<VacancyList> {
 
   @override
   Widget build(BuildContext context) {
+    final routeState = RouteStateScope.of(context);
     return FutureBuilder<List<Vacancy>>(
       future: refreshVacancyState(),
       builder: (context, snapshot) {
@@ -216,7 +219,7 @@ class VacancyListState extends State<VacancyList> {
                                 );
                                 await addSudentApplicantEvaluation(context);
 
-                                //await routeState.go('/tests/logical');
+                                await routeState.go('/application');
                               } else {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
@@ -261,25 +264,27 @@ class VacancyListState extends State<VacancyList> {
         log('addSudentApplicantEvaluation valid');
         log(answers.toString());
         log(criteriaIds.toString());
+        List<Evaluation> evaluations = [];
         answers.forEach((element) {
           if (element != '') {
-            log(element);
-            log(criteriaIds[answers.indexOf(element)].toString());
+            evaluations.add(Evaluation(
+                evaluation_criteria_id: criteriaIds[answers.indexOf(element)],
+                response: element,
+                evaluatee_id: admissionSystemInstance.getStudentPerson().id,
+                evaluator_id: admissionSystemInstance.getStudentPerson().id,
+                notes: 'Student Test Evaluation',
+                grade: -1));
           }
         });
-        // log(_phone_Controller.text);
-        // log(phoneMaskTextInputFormatter.getUnmaskedText());
-        // admissionSystemInstance.setPrecondisionsSubmitted(true);
-        // final Person person = Person(
-        //     record_type: 'person',
-        //     full_name: _full_name_Controller.text,
-        //     preferred_name: _preferred_name_Controller.text,
-        //     sex: gender,
-        //     phone: int.parse(phoneMaskTextInputFormatter.getUnmaskedText()),
-        //     email: _email_Controller.text);
-        //log(person.toJson().toString());
-        //final createPersonResponse = await createPerson(person);
-        //log(createPersonResponse.body.toString());
+        log('vacancy list :' + evaluations.toString());
+        evaluations.forEach((element) {
+          log('vacancy list loop elements:' + element.toString());
+          log(element.toJson().toString());
+        });
+
+        final createEvaluationsResponse = await createEvaluation(evaluations);
+
+        log(createEvaluationsResponse.body.toString());
         //Navigator.of(context).pop(true);
 
       } else {

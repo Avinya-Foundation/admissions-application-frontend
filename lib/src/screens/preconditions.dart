@@ -1,6 +1,7 @@
 import 'dart:developer';
-
+import 'package:intl/intl.dart';
 import 'package:ShoolManagementSystem/src/data.dart';
+import 'package:ShoolManagementSystem/src/data/applicant_consent.dart';
 // import 'package:ShoolManagementSystem/src/data/library.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter/services.dart';
@@ -119,8 +120,7 @@ class _PreconditionsScreenState extends State<PreconditionsScreen> {
                 Center(
                   child: SingleChildScrollView(
                     child: Html(
-                      data:
-                          """
+                      data: """
                 <div>
                 <h1>Avinya Acadamy Student Admissions</h1>
                 <p>Avinya Acadamy is a school that is dedicated to providing a high quality 
@@ -431,9 +431,21 @@ class _PreconditionsScreenState extends State<PreconditionsScreen> {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('Processing Data')),
                         );
-                        await addSudentApplicant(context);
 
-                        await routeState.go('/tests/logical');
+                        bool successAddingApplicantConsent =
+                            await addSudentApplicantConsent(context);
+                        if (successAddingApplicantConsent) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text('You consented successfully')),
+                          );
+                          await routeState.go('/apply');
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text('Failed to zpply, try again')),
+                          );
+                        }
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
@@ -486,33 +498,61 @@ class _PreconditionsScreenState extends State<PreconditionsScreen> {
         : null;
   }
 
-  Future<void> addSudentApplicant(BuildContext context) async {
+  Future<bool> addSudentApplicantConsent(BuildContext context) async {
     try {
       if (_formKey.currentState!.validate()) {
-        log('addSudentApplicant valid');
+        log('addSudentApplicantConsent valid');
         log(_phone_Controller.text);
         log(phoneMaskTextInputFormatter.getUnmaskedText());
         admissionSystemInstance.setPrecondisionsSubmitted(true);
-        // final Person person = Person(
-        //     record_type: 'person',
-        //     full_name: _full_name_Controller.text,
-        //     preferred_name: _preferred_name_Controller.text,
-        //     sex: gender,
-        //     phone: int.parse(phoneMaskTextInputFormatter.getUnmaskedText()),
-        //     email: _email_Controller.text);
-        //log(person.toJson().toString());
-        //final createPersonResponse = await createPerson(person);
-        //log(createPersonResponse.body.toString());
-        //Navigator.of(context).pop(true);
+        final ApplicantConsent applicantConsent = ApplicantConsent(
+          name: _full_name_Controller.text,
+          date_of_birth: DateFormat('yyyy-MM-dd').format(dateOfBirth),
+          done_ol: doneOL,
+          ol_year: olYear.year,
+          email: _email_Controller.text,
+          phone: int.parse(phoneMaskTextInputFormatter.getUnmaskedText()),
+          distance_to_school: int.parse(_distance_Controller.text),
+          information_correct_consent: checkbox1,
+          agree_terms_consent: checkbox2,
+        );
 
+        var createPersonResponse = null;
+        try {
+          createPersonResponse = await createApplicantConsent(applicantConsent);
+        } catch (e) {
+          log(e.toString());
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                'There was a problem submitting your data. Please try again later.',
+                style: TextStyle(
+                    color: Colors.red,
+                    fontStyle: FontStyle.italic,
+                    fontWeight: FontWeight.bold),
+              ),
+              behavior: SnackBarBehavior.floating,
+              margin: EdgeInsets.only(left: 100.0, right: 100.0, bottom: 100.0),
+              duration: Duration(seconds: 5),
+              backgroundColor: Colors.yellow,
+            ),
+          );
+          return false;
+        }
+
+        log(createPersonResponse.body.toString());
+
+        return true;
       } else {
-        log('addSudentApplicant invalid');
+        log('addSudentApplicantConsent invalid');
+        return false;
       }
     } on Exception {
       await showDialog(
         context: context,
         builder: (_) => AlertDialog(
-          content: const Text('Failed to submit the student application form'),
+          content:
+              const Text('Failed to submit the student applicant consent form'),
           actions: <Widget>[
             TextButton(
               onPressed: () {
@@ -523,6 +563,7 @@ class _PreconditionsScreenState extends State<PreconditionsScreen> {
           ],
         ),
       );
+      return false;
     }
   }
 }

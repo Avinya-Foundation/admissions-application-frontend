@@ -32,6 +32,33 @@ class AdmissionSystem {
   bool precondisionsSubmitted = false;
   bool applicationSubmitted = false;
   final String schoolName = 'Bandaragama';
+  int vacancyId = 1; // todo - this needs to be fetched and set from the server
+  Person studentPerson = Person();
+  Application application = Application();
+
+  void setVacancyId(int id) {
+    vacancyId = id;
+  }
+
+  int getVacancyId() {
+    return vacancyId;
+  }
+
+  void setStudentPerson(Person person) {
+    studentPerson = person;
+  }
+
+  Person getStudentPerson() {
+    return studentPerson;
+  }
+
+  void setApplication(Application? application) {
+    this.application = application!;
+  }
+
+  Application getApplication() {
+    return this.application;
+  }
 
   // void addEmployee(Employee employee) {
   //   allEmployees.add(employee);

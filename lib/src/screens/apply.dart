@@ -1,12 +1,24 @@
 import 'dart:developer';
 
 import 'package:ShoolManagementSystem/src/data.dart';
+import 'package:ShoolManagementSystem/src/data/address.dart';
 // import 'package:ShoolManagementSystem/src/data/library.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import '../routing.dart';
+
+class CityNearBandaragama {
+  int? id;
+  String? name;
+
+  CityNearBandaragama(this.name, this.id);
+
+  String getName() {
+    return this.name!;
+  }
+}
 
 class ApplyScreen extends StatefulWidget {
   static const String route = 'apply';
@@ -26,6 +38,8 @@ class _ApplyScreenState extends State<ApplyScreen> {
   late FocusNode _email_FocusNode;
   late TextEditingController _phone_Controller;
   late FocusNode _phone_FocusNode;
+  late TextEditingController _address_Controller;
+  late FocusNode _address_FocusNode;
 
   MaskTextInputFormatter phoneMaskTextInputFormatter =
       new MaskTextInputFormatter(
@@ -33,6 +47,65 @@ class _ApplyScreenState extends State<ApplyScreen> {
           filter: {"#": RegExp(r'[0-9]')},
           type: MaskAutoCompletionType.eager);
   String gender = 'Not Specified';
+
+  var cities = <CityNearBandaragama>[
+    new CityNearBandaragama("Akarawita", 329),
+    new CityNearBandaragama("Alubomulla", 656),
+    new CityNearBandaragama("Ambalangoda", 330),
+    new CityNearBandaragama("Arawwala West", 1904),
+    new CityNearBandaragama("Bandaragama", 660),
+    new CityNearBandaragama("Batuwatta", 914),
+    new CityNearBandaragama("Bokundara", 1922),
+    new CityNearBandaragama("Boralesgamuwa", 337),
+    new CityNearBandaragama("Dampe", 1941),
+    new CityNearBandaragama("Deltara", 341),
+    new CityNearBandaragama("Egodauyana North", 1928),
+    new CityNearBandaragama("Egodauyana South", 1929),
+    new CityNearBandaragama("Galawilawaththa", 1901),
+    new CityNearBandaragama("Gonapola Junction", 678),
+    new CityNearBandaragama("Gorakapitiya", 1919),
+    new CityNearBandaragama("Haltota", 682),
+    new CityNearBandaragama("Hiripitya", 344),
+    new CityNearBandaragama("Homagama", 346),
+    new CityNearBandaragama("Homagama Town", 1898),
+    new CityNearBandaragama("Horagala", 347),
+    new CityNearBandaragama("Horana", 690),
+    new CityNearBandaragama("Indibedda", 1930),
+    new CityNearBandaragama("Kahathuduwa", 1923),
+    new CityNearBandaragama("Kananwila", 695),
+    new CityNearBandaragama("Kandanagama", 696),
+    new CityNearBandaragama("Katuwawala", 1917),
+    new CityNearBandaragama("Kesbewa", 1921),
+    new CityNearBandaragama("Kiriwattuduwa", 352),
+    new CityNearBandaragama("Kottawa", 1902),
+    new CityNearBandaragama("Kuda Uduwa", 700),
+    new CityNearBandaragama("Liyanwala", 1939),
+    new CityNearBandaragama("Madapatha", 355),
+    new CityNearBandaragama("Magammana-Dolekade", 1897),
+    new CityNearBandaragama("Maharagama", 356),
+    new CityNearBandaragama("Makandana", 1920),
+    new CityNearBandaragama("Malapalla", 1907),
+    new CityNearBandaragama("Mattegoda", 1908),
+    new CityNearBandaragama("Millaniya", 714),
+    new CityNearBandaragama("Millewa", 715),
+    new CityNearBandaragama("Miwanapalana", 716),
+    new CityNearBandaragama("Morontuduwa", 719),
+    new CityNearBandaragama("Pannipitiya", 364),
+    new CityNearBandaragama("Paragastota", 727),
+    new CityNearBandaragama("Pelenwatta", 1903),
+    new CityNearBandaragama("Piliyandala", 365),
+    new CityNearBandaragama("Pitipana Homagama", 366),
+    new CityNearBandaragama("Pokunuwita", 734),
+    new CityNearBandaragama("Polgasowita", 367),
+    new CityNearBandaragama("Poregedara", 1940),
+    new CityNearBandaragama("Siddamulla", 370),
+    new CityNearBandaragama("Siyambalagoda", 371),
+    new CityNearBandaragama("Suwarapola", 1918),
+    new CityNearBandaragama("Welmilla Junction", 749),
+    new CityNearBandaragama("Willorawatta", 1933),
+  ];
+
+  var selectedcity = null;
 
   @override
   void initState() {
@@ -45,6 +118,8 @@ class _ApplyScreenState extends State<ApplyScreen> {
     _email_FocusNode = FocusNode();
     _phone_Controller = TextEditingController();
     _phone_FocusNode = FocusNode();
+    _address_Controller = TextEditingController();
+    _address_FocusNode = FocusNode();
   }
 
   @override
@@ -57,6 +132,8 @@ class _ApplyScreenState extends State<ApplyScreen> {
     _email_FocusNode.dispose();
     _phone_Controller.dispose();
     _phone_FocusNode.dispose();
+    _address_Controller.dispose();
+    _address_FocusNode.dispose();
     super.dispose();
   }
 
@@ -72,120 +149,175 @@ class _ApplyScreenState extends State<ApplyScreen> {
         child: Form(
           key: _formKey,
           autovalidateMode: AutovalidateMode.onUserInteraction,
-          child: Column(
-            children: <Widget>[
-              const Text('Fill in the applicant details'),
-              TextFormField(
-                controller: _full_name_Controller,
-                decoration: const InputDecoration(
-                    labelText: 'Full name *',
-                    hintText: 'Enter your full name',
-                    helperText: 'Same as in your NIC or birth certificate'),
-                onFieldSubmitted: (_) {
-                  _full_name_FocusNode.requestFocus();
-                },
-                validator: _mandatoryValidator,
-              ),
-              TextFormField(
-                controller: _preferred_name_Controller,
-                decoration: const InputDecoration(
-                    labelText: 'Preferred name *',
-                    contentPadding: EdgeInsets.symmetric(vertical: 2),
-                    hintText: 'Enter the name you preferr to be called',
-                    helperText: 'e.g. John'),
-                onFieldSubmitted: (_) {
-                  _preferred_name_FocusNode.requestFocus();
-                },
-                validator: _mandatoryValidator,
-              ),
-              Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    SizedBox(height: 10.0),
-                    Text('Sex'),
-                    SizedBox(height: 10.0),
-                    Row(children: [
-                      SizedBox(
-                        width: 10,
-                        child: Radio(
-                          value: 'Male',
-                          groupValue: gender,
-                          activeColor: Colors.orange,
-                          onChanged: (value) {
-                            //value may be true or false
-                            setState(() {
-                              gender = value.toString();
-                            });
-                          },
-                        ),
-                      ),
-                      SizedBox(width: 10.0),
-                      Text('Male'),
-                      SizedBox(width: 10.0),
-                      //]),
-                      //Row(children: [
-                      SizedBox(
-                        width: 10,
-                        child: Radio(
-                          value: 'Female',
-                          groupValue: gender,
-                          activeColor: Colors.orange,
-                          onChanged: (value) {
-                            //value may be true or false
-                            setState(() {
-                              gender = value.toString();
-                            });
-                          },
-                        ),
-                      ),
-                      SizedBox(width: 10.0),
-                      Text('Female'),
-                    ]),
-                  ]),
-              TextFormField(
-                controller: _phone_Controller,
-                decoration: InputDecoration(
-                  labelText: 'Phone number *',
-                  hintText: 'Enter your phone number',
-                  helperText: 'e.g 077 123 4567',
-                ),
-                onFieldSubmitted: (_) {
-                  _phone_FocusNode.requestFocus();
-                },
-                validator: (value) =>
-                    _mandatoryValidator(value) ?? _phoneValidator(value),
-
-                keyboardType: TextInputType.number,
-                inputFormatters: <TextInputFormatter>[
-                  FilteringTextInputFormatter.digitsOnly,
-                  phoneMaskTextInputFormatter,
-                ], // Only numbers can be entered
-              ),
-              TextFormField(
-                controller: _email_Controller,
-                decoration: InputDecoration(
-                  labelText: 'Email *',
-                  hintText: 'Enter your email address',
-                  helperText: 'e.g john@mail.com',
-                ),
-                onFieldSubmitted: (_) {
-                  _email_FocusNode.requestFocus();
-                },
-                validator: (value) => EmailValidator.validate(value!)
-                    ? null
-                    : "Please enter a valid email",
-              ),
-              SizedBox(width: 10.0, height: 10.0),
-              ElevatedButton(
-                  onPressed: () async {
-                    if (_formKey.currentState!.validate()) {
-                      await addSudentApplicant(context);
-                      admissionSystemInstance.setApplicationSubmitted(true);
-                      await routeState.go('/authors');
-                    }
+          child: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                const Text('Fill in the applicant details'),
+                TextFormField(
+                  controller: _full_name_Controller,
+                  decoration: const InputDecoration(
+                      labelText: 'Full name *',
+                      hintText: 'Enter your full name',
+                      helperText: 'Same as in your NIC or birth certificate'),
+                  onFieldSubmitted: (_) {
+                    _full_name_FocusNode.requestFocus();
                   },
-                  child: Text('Submit'))
-            ],
+                  validator: _mandatoryValidator,
+                ),
+                TextFormField(
+                  controller: _preferred_name_Controller,
+                  decoration: const InputDecoration(
+                      labelText: 'Preferred name *',
+                      contentPadding: EdgeInsets.symmetric(vertical: 2),
+                      hintText: 'Enter the name you preferr to be called',
+                      helperText: 'e.g. John'),
+                  onFieldSubmitted: (_) {
+                    _preferred_name_FocusNode.requestFocus();
+                  },
+                  validator: _mandatoryValidator,
+                ),
+                Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      SizedBox(height: 10.0),
+                      Text('Sex'),
+                      SizedBox(height: 10.0),
+                      Row(children: [
+                        SizedBox(
+                          width: 10,
+                          child: Radio(
+                            value: 'Male',
+                            groupValue: gender,
+                            activeColor: Colors.orange,
+                            onChanged: (value) {
+                              //value may be true or false
+                              setState(() {
+                                gender = 'Male';
+                              });
+                            },
+                          ),
+                        ),
+                        SizedBox(width: 10.0),
+                        Text('Male'),
+                        SizedBox(width: 10.0),
+                        //]),
+                        //Row(children: [
+                        SizedBox(
+                          width: 10,
+                          child: Radio(
+                            value: 'Female',
+                            groupValue: gender,
+                            activeColor: Colors.orange,
+                            onChanged: (value) {
+                              //value may be true or false
+                              setState(() {
+                                gender = 'Female';
+                              });
+                            },
+                          ),
+                        ),
+                        SizedBox(width: 10.0),
+                        Text('Female'),
+                      ]),
+                    ]),
+                TextFormField(
+                  controller: _phone_Controller,
+                  decoration: InputDecoration(
+                    labelText: 'Phone number *',
+                    hintText: 'Enter your phone number',
+                    helperText: 'e.g 077 123 4567',
+                  ),
+                  onFieldSubmitted: (_) {
+                    _phone_FocusNode.requestFocus();
+                  },
+                  validator: (value) =>
+                      _mandatoryValidator(value) ?? _phoneValidator(value),
+
+                  keyboardType: TextInputType.number,
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.digitsOnly,
+                    phoneMaskTextInputFormatter,
+                  ], // Only numbers can be entered
+                ),
+                TextFormField(
+                  controller: _email_Controller,
+                  decoration: InputDecoration(
+                    labelText: 'Email *',
+                    hintText: 'Enter your email address',
+                    helperText: 'e.g john@mail.com',
+                  ),
+                  onFieldSubmitted: (_) {
+                    _email_FocusNode.requestFocus();
+                  },
+                  validator: (value) => EmailValidator.validate(value!)
+                      ? null
+                      : "Please enter a valid email",
+                ),
+                SizedBox(height: 10.0),
+                TextFormField(
+                  controller: _address_Controller,
+                  decoration: const InputDecoration(
+                      labelText: 'Address *',
+                      hintText: 'Enter your address',
+                      helperText:
+                          'You must be able to receive mail at this address'),
+                  onFieldSubmitted: (_) {
+                    _address_FocusNode.requestFocus();
+                  },
+                  validator: _mandatoryValidator,
+                ),
+                SizedBox(height: 10.0),
+                Container(
+                  padding: EdgeInsets.only(left: 5.0, right: 5.0),
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(3.0)),
+                  child: DropdownButton<CityNearBandaragama>(
+                    hint: new Text("Select the city you live in"),
+                    value: selectedcity,
+                    // isExpanded: true,
+                    icon: Icon(Icons.keyboard_arrow_down, size: 22),
+                    underline: SizedBox(),
+                    items: cities.map((CityNearBandaragama value) {
+                      return new DropdownMenuItem<CityNearBandaragama>(
+                        value: value,
+                        child: new Text(value.name!),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      //Do something with this value
+                      setState(() {
+                        selectedcity = value!;
+                      });
+                    },
+                  ),
+                ),
+                SizedBox(height: 10.0),
+                SizedBox(width: 10.0, height: 10.0),
+                ElevatedButton(
+                    onPressed: () async {
+                      if (_formKey.currentState!.validate()) {
+                        bool successAddingStudentApplicant =
+                            await addSudentApplicant(context);
+                        if (successAddingStudentApplicant) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text('You applied successfully')),
+                          );
+                          admissionSystemInstance.setApplicationSubmitted(true);
+
+                          await routeState.go('/tests/logical');
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text('Failed to apply, try again')),
+                          );
+                        }
+                      }
+                    },
+                    child: Text('Submit'))
+              ],
+            ),
           ),
         ),
       ),
@@ -203,26 +335,73 @@ class _ApplyScreenState extends State<ApplyScreen> {
         : null;
   }
 
-  Future<void> addSudentApplicant(BuildContext context) async {
+  Future<bool> addSudentApplicant(BuildContext context) async {
     try {
       if (_formKey.currentState!.validate()) {
-        log('addSudentApplicant valid');
-        log(_phone_Controller.text);
-        log(phoneMaskTextInputFormatter.getUnmaskedText());
-        final Person person = Person(
+        final Address address = Address(
+          record_type: 'address',
+          name_en: 'Mailing Address',
+          street_address: _address_Controller.text,
+          phone: int.parse(phoneMaskTextInputFormatter.getUnmaskedText()),
+          city_id: selectedcity.id,
+        );
+
+        var studentAddress = null;
+        var studentPerson = null;
+        var createdApplication = null;
+
+        try {
+          studentAddress = await createAddress(address);
+
+          log('studentAddress: ' + studentAddress.toString());
+
+          final Person person = Person(
             record_type: 'person',
             full_name: _full_name_Controller.text,
             preferred_name: _preferred_name_Controller.text,
             sex: gender,
             phone: int.parse(phoneMaskTextInputFormatter.getUnmaskedText()),
-            email: _email_Controller.text);
-        log(person.toJson().toString());
-        final createPersonResponse = await createPerson(person);
-        log(createPersonResponse.body.toString());
-        //Navigator.of(context).pop(true);
+            email: _email_Controller.text,
+            mailing_address_id: studentAddress.id,
+          );
 
+          studentPerson = await createPerson(person);
+
+          admissionSystemInstance.setStudentPerson(studentPerson);
+
+          final Application application = Application(
+            person_id: studentPerson.id,
+            vacancy_id: admissionSystemInstance.getVacancyId(),
+          );
+
+          createdApplication = await createApplication(application);
+          admissionSystemInstance.setApplication(createdApplication);
+
+          log(createdApplication.toString());
+
+          return true;
+        } catch (e) {
+          log(e.toString());
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                'There was a problem submitting your data. Please try again later.',
+                style: TextStyle(
+                    color: Colors.red,
+                    fontStyle: FontStyle.italic,
+                    fontWeight: FontWeight.bold),
+              ),
+              behavior: SnackBarBehavior.floating,
+              margin: EdgeInsets.only(left: 100.0, right: 100.0, bottom: 100.0),
+              duration: Duration(seconds: 5),
+              backgroundColor: Colors.yellow,
+            ),
+          );
+          return false;
+        }
       } else {
         log('addSudentApplicant invalid');
+        return false;
       }
     } on Exception {
       await showDialog(
@@ -239,6 +418,7 @@ class _ApplyScreenState extends State<ApplyScreen> {
           ],
         ),
       );
+      return false;
     }
   }
 }
