@@ -151,6 +151,7 @@ class _ApplyScreenState extends State<ApplyScreen> {
           autovalidateMode: AutovalidateMode.onUserInteraction,
           child: SingleChildScrollView(
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 const Text('Fill in the applicant details'),
                 TextFormField(
@@ -183,18 +184,21 @@ class _ApplyScreenState extends State<ApplyScreen> {
                       Text('Sex'),
                       SizedBox(height: 10.0),
                       Row(children: [
-                        SizedBox(
-                          width: 10,
-                          child: Radio(
-                            value: 'Male',
-                            groupValue: gender,
-                            activeColor: Colors.orange,
-                            onChanged: (value) {
-                              //value may be true or false
-                              setState(() {
-                                gender = 'Male';
-                              });
-                            },
+                        Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: SizedBox(
+                            width: 10,
+                            child: Radio(
+                              value: 'Male',
+                              groupValue: gender,
+                              activeColor: Colors.orange,
+                              onChanged: (value) {
+                                //value may be true or false
+                                setState(() {
+                                  gender = 'Male';
+                                });
+                              },
+                            ),
                           ),
                         ),
                         SizedBox(width: 10.0),
@@ -202,18 +206,21 @@ class _ApplyScreenState extends State<ApplyScreen> {
                         SizedBox(width: 10.0),
                         //]),
                         //Row(children: [
-                        SizedBox(
-                          width: 10,
-                          child: Radio(
-                            value: 'Female',
-                            groupValue: gender,
-                            activeColor: Colors.orange,
-                            onChanged: (value) {
-                              //value may be true or false
-                              setState(() {
-                                gender = 'Female';
-                              });
-                            },
+                        Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: SizedBox(
+                            width: 10,
+                            child: Radio(
+                              value: 'Female',
+                              groupValue: gender,
+                              activeColor: Colors.orange,
+                              onChanged: (value) {
+                                //value may be true or false
+                                setState(() {
+                                  gender = 'Female';
+                                });
+                              },
+                            ),
                           ),
                         ),
                         SizedBox(width: 10.0),
@@ -272,12 +279,16 @@ class _ApplyScreenState extends State<ApplyScreen> {
                   decoration: BoxDecoration(
                       border: Border.all(color: Colors.grey),
                       borderRadius: BorderRadius.circular(3.0)),
-                  child: DropdownButton<CityNearBandaragama>(
+                  child: DropdownButtonFormField<CityNearBandaragama>(
                     hint: new Text("Select the city you live in"),
                     value: selectedcity,
                     // isExpanded: true,
                     icon: Icon(Icons.keyboard_arrow_down, size: 22),
-                    underline: SizedBox(),
+                    decoration: InputDecoration(
+                      constraints: BoxConstraints(
+                        maxWidth: 200.0,
+                      ),
+                    ),
                     items: cities.map((CityNearBandaragama value) {
                       return new DropdownMenuItem<CityNearBandaragama>(
                         value: value,
@@ -290,6 +301,9 @@ class _ApplyScreenState extends State<ApplyScreen> {
                         selectedcity = value!;
                       });
                     },
+                    validator: (value) => value == null
+                        ? 'You must select the city nearest to your home'
+                        : null,
                   ),
                 ),
                 SizedBox(height: 10.0),
@@ -297,6 +311,9 @@ class _ApplyScreenState extends State<ApplyScreen> {
                 ElevatedButton(
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Processing Data')),
+                        );
                         bool successAddingStudentApplicant =
                             await addSudentApplicant(context);
                         if (successAddingStudentApplicant) {
@@ -351,6 +368,9 @@ class _ApplyScreenState extends State<ApplyScreen> {
         var createdApplication = null;
 
         try {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Processing Address Data')),
+          );
           studentAddress = await createAddress(address);
 
           log('studentAddress: ' + studentAddress.toString());
@@ -365,6 +385,9 @@ class _ApplyScreenState extends State<ApplyScreen> {
             mailing_address_id: studentAddress.id,
           );
 
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Processing Student Data')),
+          );
           studentPerson = await createPerson(person);
 
           admissionSystemInstance.setStudentPerson(studentPerson);
@@ -372,6 +395,10 @@ class _ApplyScreenState extends State<ApplyScreen> {
           final Application application = Application(
             person_id: studentPerson.id,
             vacancy_id: admissionSystemInstance.getVacancyId(),
+          );
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Preparing Appliction Data')),
           );
 
           createdApplication = await createApplication(application);

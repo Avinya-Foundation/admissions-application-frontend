@@ -130,6 +130,8 @@ class _SchoolManagementSystemState extends State<SchoolManagementSystem> {
       return testsRoute;
     } else if (!signedIn && from == applicationRoute) {
       return applicationRoute;
+    } else if (!signedIn && from == signInRoute) {
+      return signInRoute;
     } else if (!signedIn &&
         admissionSystemInstance.getPrecondisionsSubmitted()) {
       return signInRoute;
