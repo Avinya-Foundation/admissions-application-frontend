@@ -2,17 +2,24 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:html';
 
+import 'package:ShoolManagementSystem/src/data/admission_system.dart';
+import 'package:ShoolManagementSystem/src/data/person.dart';
 import 'package:flutter/widgets.dart';
 
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:async';
+
+import 'package:http/http.dart' as http;
+import './config/app_config.dart';
+
+import 'package:jwt_decoder/jwt_decoder.dart';
 
 /// A mock authentication service
 class SMSAuth extends ChangeNotifier {
   bool _signedIn = false;
   var _openid_tokens;
 
-  bool getSignedIn() {
+  Future<bool> getSignedIn() async {
     var tokens = window.localStorage['openid_client:tokens'];
 
     if (tokens != null) {
@@ -20,10 +27,91 @@ class SMSAuth extends ChangeNotifier {
 
       if (_openid_tokens != null && _openid_tokens['access_token'] != null) {
         _signedIn = true;
-        log('auth token $tokens');
-        log('auth tokens $_openid_tokens');
-        log('auth scope ${_openid_tokens["scope"]}');
-        log('auth openid_client:auth ${window.localStorage['openid_client:auth']}');
+        print('OpenID tokens ##################');
+        _openid_tokens.forEach((key, value) =>
+            print("Access token -- Key : $key, Value : $value"));
+        Map<String, dynamic> decodedAccessToken =
+            JwtDecoder.decode(_openid_tokens["access_token"]);
+        decodedAccessToken.forEach((key, value) =>
+            print("access_token -- Key : $key, Value : $value"));
+
+        // capture token information to help map the sing in user to Avinya person
+        admissionSystemInstance.setJWTSub(decodedAccessToken["sub"]);
+        admissionSystemInstance.setJWTEmail(decodedAccessToken["email"]);
+
+        bool isTokenExpired = JwtDecoder.isExpired(_openid_tokens["id_token"]);
+        print("Open ID token is expired $isTokenExpired");
+
+        Map<String, dynamic> decodedIDToken =
+            JwtDecoder.decode(_openid_tokens["id_token"]);
+        decodedIDToken.forEach(
+            (key, value) => print("id_token -- Key : $key, Value : $value"));
+        print('email :: ' + decodedIDToken["email"]);
+
+        if (isTokenExpired) {
+          window.localStorage.remove('openid_client:tokens');
+          window.localStorage.clear();
+          _signedIn = false;
+          return _signedIn;
+        }
+
+        if (AppConfig.apiTokens != null) {
+          //use refresh token
+          // however when app reloads, apiTokens will be null
+          // should refresh token when calling APIs
+        } else {
+          final response = await http.post(
+            Uri.parse(AppConfig.choreoSTSEndpoint),
+            headers: <String, String>{
+              //'Content-Type': 'application/x-www-form-urlencoded',
+              //'Authorization': 'Bearer ${_openid_tokens["access_token"]}',
+              //'Authorization': 'Bearer ' + AppConfig.admissionsApplicationBffApiKey,
+            },
+            encoding: Encoding.getByName('utf-8'),
+            body: {
+              "client_id": AppConfig.choreoSTSClientID,
+              "subject_token_type": "urn:ietf:params:oauth:token-type:jwt",
+              "grant_type": "urn:ietf:params:oauth:grant-type:token-exchange",
+              "subject_token": _openid_tokens["id_token"],
+            },
+          );
+          if (response.statusCode == 200) {
+            print(response.body.toString());
+            var _api_tokens = json.decode(response.body);
+            AppConfig.apiTokens = _api_tokens;
+            print('API tokens ##################');
+            _api_tokens
+              ..forEach((key, value) =>
+                  print("API tokens Key : $key, Value : $value"));
+            AppConfig.admissionsApplicationBffApiKey =
+                _api_tokens["access_token"];
+            print('Fetch API tokens success');
+          } else {
+            print('Failed to fetch API key');
+            print('Fetch API tokens error :: ' + response.body.toString());
+            print(response.statusCode);
+            _signedIn = false;
+          }
+        }
+      }
+    } else {
+      _signedIn = false;
+      window.localStorage.clear();
+    }
+
+    if (_signedIn) {
+      // check if user is in Avinya database person table as a student
+      try {
+        Person person = admissionSystemInstance.getStudentPerson();
+        if (person.jwt_sub_id == null ||
+            person.jwt_sub_id != admissionSystemInstance.getJWTSub()!) {
+          person = await fetchPerson(admissionSystemInstance.getJWTSub()!);
+          admissionSystemInstance.setStudentPerson(person);
+        }
+      } catch (e) {
+        print(
+            'In auth getSingIn :: Error fetching person from Avinya database');
+        print(e);
       }
     }
 

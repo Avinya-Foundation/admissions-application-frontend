@@ -26,6 +26,9 @@ Future<void> main() async {
   runApp(const SchoolManagementSystem());
 
   await AppConfig.forEnvironment('dev');
+  AppConfig.choreoSTSClientID = const String.fromEnvironment(
+      'choreo_sts_client_id',
+      defaultValue: 'undefined');
   log(AppConfig.apiUrl);
 }
 

@@ -23,6 +23,8 @@ class Person {
   int? phone;
   int? organization_id;
   String? asgardeo_id;
+  String? jwt_sub_id;
+  String? jwt_email;
   String? email;
   Address? permanent_address;
   Address? mailing_address;
@@ -44,6 +46,8 @@ class Person {
     this.phone,
     this.organization_id,
     this.asgardeo_id,
+    this.jwt_sub_id,
+    this.jwt_email,
     this.email,
     this.permanent_address,
     this.mailing_address,
@@ -67,6 +71,8 @@ class Person {
       phone: json['phone'],
       organization_id: json['organization_id'],
       asgardeo_id: json['asgardeo_id'],
+      jwt_sub_id: json['jwt_sub_id'],
+      jwt_email: json['jwt_email'],
       email: json['email'],
       permanent_address: Address.fromJson(
           json['permanent_address'] != null ? json['permanent_address'] : {}),
@@ -94,6 +100,8 @@ class Person {
         if (phone != null) 'phone': phone,
         if (organization_id != null) 'organization_id': organization_id,
         if (asgardeo_id != null) 'asgardeo_id': asgardeo_id,
+        if (jwt_sub_id != null) 'jwt_sub_id': jwt_sub_id,
+        if (jwt_email != null) 'jwt_email': jwt_email,
         if (email != null) 'email': email,
         if (permanent_address != null)
           'permanent_address': permanent_address!.toJson(),
@@ -108,7 +116,7 @@ Future<List<Person>> fetchPersons() async {
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       'accept': 'application/json',
-      'API-Key': AppConfig.admissionsApplicationBffApiKey,
+      'Authorization': 'Bearer ' + AppConfig.admissionsApplicationBffApiKey,
     },
   );
 
@@ -122,14 +130,14 @@ Future<List<Person>> fetchPersons() async {
   }
 }
 
-Future<Person> fetchPerson(String id) async {
+Future<Person> fetchPerson(String jwt_sub_id) async {
   final response = await http.get(
-    Uri.parse(
-        AppConfig.admissionsApplicationBffApiUrl + '/student_applicant/$id'),
+    Uri.parse(AppConfig.admissionsApplicationBffApiUrl +
+        '/student_applicant/$jwt_sub_id'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       'accept': 'application/json',
-      'API-Key': AppConfig.admissionsApplicationBffApiKey,
+      'Authorization': 'Bearer ' + AppConfig.admissionsApplicationBffApiKey,
     },
   );
 
@@ -148,7 +156,7 @@ Future<Person> createPerson(Person person) async {
     Uri.parse(AppConfig.admissionsApplicationBffApiUrl + '/student_applicant'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
-      'API-Key': AppConfig.admissionsApplicationBffApiKey,
+      'Authorization': 'Bearer ' + AppConfig.admissionsApplicationBffApiKey,
     },
     body: jsonEncode(person.toJson()),
   );
@@ -167,7 +175,7 @@ Future<http.Response> updatePerson(Person person) async {
     Uri.parse(AppConfig.admissionsApplicationBffApiUrl + '/student_applicant'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
-      'API-Key': AppConfig.admissionsApplicationBffApiKey,
+      'Authorization': 'Bearer ' + AppConfig.admissionsApplicationBffApiKey,
     },
     body: jsonEncode(person.toJson()),
   );
@@ -184,7 +192,7 @@ Future<http.Response> deletePerson(String id) async {
         AppConfig.admissionsApplicationBffApiUrl + '/student_applicant/$id'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
-      'API-Key': AppConfig.admissionsApplicationBffApiKey,
+      'Authorization': 'Bearer ' + AppConfig.admissionsApplicationBffApiKey,
     },
   );
 

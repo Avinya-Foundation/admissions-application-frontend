@@ -80,7 +80,7 @@ Future<List<Application>> fetchApplications() async {
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       'accept': 'application/json',
-      'API-Key': AppConfig.admissionsApplicationBffApiKey,
+      'Authorization': 'Bearer ' + AppConfig.admissionsApplicationBffApiKey,
     },
   );
 
@@ -101,7 +101,7 @@ Future<Application> fetchApplication(int id) async {
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       'accept': 'application/json',
-      'API-Key': AppConfig.admissionsApplicationBffApiKey,
+      'Authorization': 'Bearer ' + AppConfig.admissionsApplicationBffApiKey,
     },
   );
 
@@ -119,7 +119,7 @@ Future<Application> createApplication(Application applicantConsent) async {
     Uri.parse(AppConfig.admissionsApplicationBffApiUrl + '/application'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
-      'API-Key': AppConfig.admissionsApplicationBffApiKey,
+      'Authorization': 'Bearer ' + AppConfig.admissionsApplicationBffApiKey,
     },
     body: jsonEncode(applicantConsent.toJson()),
   );
@@ -137,7 +137,7 @@ Future<http.Response> updateApplication(Application applicantConsent) async {
     Uri.parse(AppConfig.admissionsApplicationBffApiUrl + '/application'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
-      'API-Key': AppConfig.admissionsApplicationBffApiKey,
+      'Authorization': 'Bearer ' + AppConfig.admissionsApplicationBffApiKey,
     },
     body: jsonEncode(applicantConsent.toJson()),
   );
@@ -153,7 +153,7 @@ Future<http.Response> deleteApplication(String id) async {
     Uri.parse(AppConfig.admissionsApplicationBffApiUrl + '/application/$id'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
-      'API-Key': AppConfig.admissionsApplicationBffApiKey,
+      'Authorization': 'Bearer ' + AppConfig.admissionsApplicationBffApiKey,
     },
   );
 

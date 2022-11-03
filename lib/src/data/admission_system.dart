@@ -35,6 +35,8 @@ class AdmissionSystem {
   int vacancyId = 1; // todo - this needs to be fetched and set from the server
   Person studentPerson = Person();
   Application application = Application();
+  String? user_jwt_sub;
+  String? user_jwt_email;
 
   void setVacancyId(int id) {
     vacancyId = id;
@@ -58,6 +60,22 @@ class AdmissionSystem {
 
   Application getApplication() {
     return this.application;
+  }
+
+  void setJWTSub(String? jwt_sub) {
+    user_jwt_sub = jwt_sub;
+  }
+
+  String? getJWTSub() {
+    return user_jwt_sub;
+  }
+
+  void setJWTEmail(String? jwt_email) {
+    user_jwt_email = jwt_email;
+  }
+
+  String? getJWTEmail() {
+    return user_jwt_email;
   }
 
   // void addEmployee(Employee employee) {

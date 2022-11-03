@@ -98,7 +98,7 @@ class _SchoolManagementSystemState extends State<SchoolManagementSystem> {
       );
 
   Future<ParsedRoute> _guard(ParsedRoute from) async {
-    final signedIn = _auth.getSignedIn();
+    final signedIn = await _auth.getSignedIn();
     final applyRoute = ParsedRoute('/apply', '/apply', {}, {});
     final subscribeRoute = ParsedRoute('/subscribe', '/subscribe', {}, {});
     final subscribedThankyouRoute =
@@ -146,8 +146,9 @@ class _SchoolManagementSystemState extends State<SchoolManagementSystem> {
     return from;
   }
 
-  void _handleAuthStateChanged() {
-    if (!_auth.getSignedIn()) {
+  void _handleAuthStateChanged() async {
+    bool signedIn = await _auth.getSignedIn();
+    if (!signedIn) {
       _routeState.go('/preconditions');
     }
   }

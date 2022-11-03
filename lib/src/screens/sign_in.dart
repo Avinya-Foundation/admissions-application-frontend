@@ -62,16 +62,16 @@ class _SignInScreenState extends State<SignInScreen> {
   //         ),
   //       ),
   //     );
-  final String _clientId = '_JoZvBSxTISlYQoZhNogFs8dHXsa';
+  final String _clientId = '5aWvzhsDFmvgHqxeV_f43yJ92xca';
   //final String _redirectUrl = 'http://localhost:52004/';
   static const String _issuerUrl =
+      //'https://api.asgardeo.io/t/avinyafoundation/oauth2/authorize';
       'https://api.asgardeo.io/t/avinyafoundation/oauth2/token';
+
   // final String _discoveryUrl =
   //     'https://api.asgardeo.io/t/avinyafoundation/oauth2/token/.well-known/openid-configuration';
-  final List<String> _scopes = <String>[
-    'openid',
-    'profile',
-  ];
+
+  final List<String> _scopes = <String>['openid', 'profile', 'email'];
 
   @override
   Widget build(BuildContext context) {

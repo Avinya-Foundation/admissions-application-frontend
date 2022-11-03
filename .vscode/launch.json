@@ -5,7 +5,7 @@
             "type": "dart",
             "request": "launch",
             "program": "lib\\main.dart", 
-            "args": ["--web-port=52004"]
+            "args": ["--web-port=52004", "--dart-define=choreo_sts_client_id=OPbVrlsjUy0_znUq6G_7EijAeWka"]
         }
     ]
 }

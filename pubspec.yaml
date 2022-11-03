@@ -17,6 +17,7 @@ dependencies:
   flutter_html: ^2.2.1
   http: ^0.13.5
   intl: ^0.17.0
+  jwt_decoder: ^2.0.1
   mask_text_input_formatter: ^2.4.0
   openid_client: ^0.4.6
   path_to_regexp: ^0.4.0

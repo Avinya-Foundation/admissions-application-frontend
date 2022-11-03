@@ -49,7 +49,7 @@ Future<List<Address>> fetchAddresss() async {
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       'accept': 'application/json',
-      'API-Key': AppConfig.admissionsApplicationBffApiKey,
+      'Authorization': 'Bearer ' + AppConfig.admissionsApplicationBffApiKey,
     },
   );
 
@@ -71,7 +71,7 @@ Future<Address> fetchAddress(String id) async {
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       'accept': 'application/json',
-      'API-Key': AppConfig.admissionsApplicationBffApiKey,
+      'Authorization': 'Bearer ' + AppConfig.admissionsApplicationBffApiKey,
     },
   );
 
@@ -88,7 +88,7 @@ Future<Address> createAddress(Address address) async {
     Uri.parse(AppConfig.admissionsApplicationBffApiUrl + '/address'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
-      'API-Key': AppConfig.admissionsApplicationBffApiKey,
+      'Authorization': 'Bearer ' + AppConfig.admissionsApplicationBffApiKey,
     },
     body: jsonEncode(address.toJson()),
   );
@@ -108,7 +108,7 @@ Future<http.Response> updateAddress(Address address) async {
     Uri.parse(AppConfig.admissionsApplicationBffApiUrl + '/address'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
-      'API-Key': AppConfig.admissionsApplicationBffApiKey,
+      'Authorization': 'Bearer ' + AppConfig.admissionsApplicationBffApiKey,
     },
     body: jsonEncode(address.toJson()),
   );
@@ -124,7 +124,7 @@ Future<http.Response> deleteAddress(String id) async {
     Uri.parse(AppConfig.admissionsApplicationBffApiUrl + '/address/$id'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
-      'API-Key': AppConfig.admissionsApplicationBffApiKey,
+      'Authorization': 'Bearer ' + AppConfig.admissionsApplicationBffApiKey,
     },
   );
 
