@@ -17,7 +17,7 @@ class VacancyList extends StatefulWidget {
 
 class VacancyListState extends State<VacancyList> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  late Future<List<Vacancy>> futureVacancys;
+  late Future<List<Vacancy>>? futureVacancys;
   final ValueChanged<Vacancy>? onTap;
   final textController1 = TextEditingController();
   final textController2 = TextEditingController();
@@ -45,14 +45,22 @@ class VacancyListState extends State<VacancyList> {
   @override
   void initState() {
     super.initState();
-    futureVacancys = fetchVacancies();
-    admissionSystemInstance.setVacancies(futureVacancys);
+    try {
+      futureVacancys = fetchVacancies();
+      admissionSystemInstance.setVacancies(futureVacancys!);
+    } catch (e) {
+      log(e.toString());
+    }
   }
 
   Future<List<Vacancy>> refreshVacancyState() async {
     //futureVacancys = fetchVacancies();
     futureVacancys = admissionSystemInstance.getVacancies();
-    return futureVacancys;
+    if (futureVacancys == null) {
+      futureVacancys = fetchVacancies();
+      admissionSystemInstance.setVacancies(futureVacancys!);
+    }
+    return futureVacancys!;
   }
 
   @override
@@ -225,9 +233,13 @@ class VacancyListState extends State<VacancyList> {
                                   const SnackBar(
                                       content: Text('Processing Data')),
                                 );
-                                await addSudentApplicantEvaluation(context);
-
-                                await routeState.go('/application');
+                                bool successPostingEvaluation =
+                                    await addSudentApplicantEvaluation(context);
+                                if (successPostingEvaluation) {
+                                  await routeState.go('/application');
+                                } else {
+                                  routeState.go('/signin');
+                                }
                               } else {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
@@ -266,9 +278,17 @@ class VacancyListState extends State<VacancyList> {
     );
   }
 
-  Future<void> addSudentApplicantEvaluation(BuildContext context) async {
+  Future<bool> addSudentApplicantEvaluation(BuildContext context) async {
     try {
       if (_formKey.currentState!.validate()) {
+        admissionSystemInstance
+            .fetchPersonForUser(); // do a fetch to help cross check
+        Person person = admissionSystemInstance.getStudentPerson();
+        if (admissionSystemInstance.getJWTSub() != person.jwt_sub_id) {
+          // the person has not logged in to the system
+          // we can record the test responses against that person
+          return false;
+        }
         log('addSudentApplicantEvaluation valid');
         log(answers.toString());
         log(criteriaIds.toString());
@@ -278,8 +298,8 @@ class VacancyListState extends State<VacancyList> {
             evaluations.add(Evaluation(
                 evaluation_criteria_id: criteriaIds[answers.indexOf(element)],
                 response: element,
-                evaluatee_id: admissionSystemInstance.getStudentPerson().id,
-                evaluator_id: admissionSystemInstance.getStudentPerson().id,
+                evaluatee_id: person.id,
+                evaluator_id: person.id,
                 notes: 'Student Test Evaluation',
                 grade: -1));
           }
@@ -293,10 +313,12 @@ class VacancyListState extends State<VacancyList> {
         final createEvaluationsResponse = await createEvaluation(evaluations);
 
         log(createEvaluationsResponse.body.toString());
+        return true;
         //Navigator.of(context).pop(true);
 
       } else {
         log('addSudentApplicantEvaluation invalid');
+        return false;
       }
     } on Exception {
       await showDialog(
@@ -313,6 +335,7 @@ class VacancyListState extends State<VacancyList> {
           ],
         ),
       );
+      return false;
     }
   }
 }

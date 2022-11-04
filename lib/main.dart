@@ -44,7 +44,7 @@ const double windowHeight = 854;
 void setupWindow() {
   if (!kIsWeb && (Platform.isWindows || Platform.isLinux || Platform.isMacOS)) {
     WidgetsFlutterBinding.ensureInitialized();
-    setWindowTitle('SMS Admin');
+    setWindowTitle('Admissions Application Management System');
     setWindowMinSize(const Size(windowWidth, windowHeight));
     setWindowMaxSize(const Size(windowWidth, windowHeight));
     getCurrentScreen().then((screen) {

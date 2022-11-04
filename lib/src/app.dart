@@ -129,26 +129,16 @@ class _AdmissionsManagementSystemState
     } else if (!signedIn && from != signInRoute) {
       // Go to /signin if the user is not signed in
       return signInRoute;
-    } else if (signedIn && from == signInRoute) {
-      return applyRoute;
-    } else if (!signedIn && from == applyRoute) {
+    } else if (signedIn && from == applyRoute) {
       return applyRoute;
     } else if (signedIn && from == testsRoute) {
       return testsRoute;
-    } else if (!signedIn && from == applicationRoute) {
+    } else if (signedIn && from == applicationRoute) {
       return applicationRoute;
-    } else if (!signedIn && from == signInRoute) {
-      return signInRoute;
-    } else if (!signedIn &&
-        admissionSystemInstance.getPrecondisionsSubmitted()) {
-      return signInRoute;
-    } else if (admissionSystemInstance.getPrecondisionsSubmitted() &&
-        from != preconditionsRoute) {
-      return ParsedRoute('/authors', '/authors', {}, {});
     }
-    // Go to /books if the user is signed in and tries to go to /signin.
+    // Go to /application if the user is signed in and tries to go to /signin.
     else if (signedIn && from == signInRoute) {
-      return ParsedRoute('/books/popular', '/books/popular', {}, {});
+      return ParsedRoute('/application', '/application', {}, {});
     }
     return from;
   }

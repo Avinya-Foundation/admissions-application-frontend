@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:ShoolManagementSystem/src/config/app_config.dart';
 import 'package:flutter/material.dart';
 import 'package:openid_client/openid_client_browser.dart';
@@ -102,6 +104,7 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 
   authenticate(Uri uri, String clientId, List<String> scopes) async {
+    log("Client ID :: " + clientId);
     // create the client
     var issuer = await Issuer.discover(uri);
     var client = new Client(issuer, clientId);

@@ -140,6 +140,8 @@ class _ApplyScreenState extends State<ApplyScreen> {
   @override
   Widget build(BuildContext context) {
     final routeState = RouteStateScope.of(context);
+    admissionSystemInstance
+        .fetchPersonForUser(); // do a fetch to help cross check
     Person person = admissionSystemInstance.getStudentPerson();
     if (admissionSystemInstance.getJWTSub() == person.jwt_sub_id) {
       // the person already exists in the system

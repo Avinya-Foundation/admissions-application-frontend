@@ -62,18 +62,18 @@ class _VacancyScreenState extends State<VacancyScreen>
             ),
           ],
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () async {
-            Navigator.of(context)
-                .push<void>(
-                  MaterialPageRoute<void>(
-                    builder: (context) => AddVacancyPage(),
-                  ),
-                )
-                .then((value) => setState(() {}));
-          },
-          child: const Icon(Icons.add),
-        ),
+        // floatingActionButton: FloatingActionButton(
+        //   onPressed: () async {
+        //     Navigator.of(context)
+        //         .push<void>(
+        //           MaterialPageRoute<void>(
+        //             builder: (context) => AddVacancyPage(),
+        //           ),
+        //         )
+        //         .then((value) => setState(() {}));
+        //   },
+        //   child: const Icon(Icons.add),
+        // ),
       );
 
   RouteState get _routeState => RouteStateScope.of(context);

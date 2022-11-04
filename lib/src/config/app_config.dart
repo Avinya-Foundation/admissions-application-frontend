@@ -9,7 +9,7 @@ class AppConfig {
   static String choreoSTSEndpoint = "https://sts.choreo.dev/oauth2/token";
   static String choreoSTSClientID = "";
   static String asgardeoTokenEndpoint =
-      "'https://api.asgardeo.io/t/avinyafoundation/oauth2/token'";
+      "https://api.asgardeo.io/t/avinyafoundation/oauth2/token";
   static String asgardeoClientId = "";
   static var apiTokens = null;
   static String applicationName = 'Avinya Acadamy Student Admissions Portal';

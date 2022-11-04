@@ -28,7 +28,7 @@ class AdmissionSystem {
   List<Employee>? allEmployees = [];
   List<AddressType>? addressTypes = [];
   List<Person>? persons = [];
-  late Future<List<Vacancy>> vacancies;
+  late Future<List<Vacancy>>? vacancies;
   bool precondisionsSubmitted = false;
   bool applicationSubmitted = false;
   final String schoolName = 'Bandaragama';
@@ -117,7 +117,7 @@ class AdmissionSystem {
     this.vacancies = vacancies;
   }
 
-  Future<List<Vacancy>> getVacancies() {
+  Future<List<Vacancy>>? getVacancies() {
     return vacancies;
   }
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../data.dart';
+import '../routing.dart';
 
 class ApplicationDetails extends StatefulWidget {
   const ApplicationDetails({super.key, this.onTap});
@@ -20,18 +21,42 @@ class ApplicationDetailsState extends State<ApplicationDetails> {
   @override
   void initState() {
     super.initState();
-    futureApplication =
-        fetchApplication(admissionSystemInstance.getStudentPerson().id!);
+    if (admissionSystemInstance.getStudentPerson().id == null) {
+      admissionSystemInstance.fetchPersonForUser();
+    }
+    if (admissionSystemInstance.getStudentPerson().id != null) {
+      futureApplication =
+          fetchApplication(admissionSystemInstance.getStudentPerson().id!);
+    }
   }
 
   Future<Application> refreshApplicationState() async {
-    futureApplication =
-        fetchApplication(admissionSystemInstance.getStudentPerson().id!);
+    if (admissionSystemInstance.getStudentPerson().id == null) {
+      admissionSystemInstance.fetchPersonForUser();
+    }
+    if (admissionSystemInstance.getStudentPerson().id != null) {
+      futureApplication =
+          fetchApplication(admissionSystemInstance.getStudentPerson().id!);
+    }
     return futureApplication;
   }
 
   @override
   Widget build(BuildContext context) {
+    final routeState = RouteStateScope.of(context);
+    try {
+      admissionSystemInstance
+          .fetchPersonForUser(); // do a fetch to help cross check
+      Person person = admissionSystemInstance.getStudentPerson();
+      if (admissionSystemInstance.getJWTSub() != person.jwt_sub_id) {
+        // the person has not logged in
+        routeState.go('/signin');
+        return Container();
+      }
+    } catch (e) {
+      routeState.go('/signin');
+      return Container();
+    }
     return FutureBuilder<Application>(
       future: refreshApplicationState(),
       builder: (context, snapshot) {
