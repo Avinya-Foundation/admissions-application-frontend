@@ -6,10 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/services.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-import 'package:url_launcher/url_launcher.dart';
 import '../routing.dart';
-
-import 'package:flutter_html/flutter_html.dart';
 
 class SubscribeScreen extends StatefulWidget {
   static const String route = 'subscribe';
@@ -79,26 +76,28 @@ class _SubscribeScreenState extends State<SubscribeScreen> {
               children: <Widget>[
                 Center(
                   child: SingleChildScrollView(
-                    child: Html(
-                      data:
-                          """
-                <div>
-                <h2>Avinya Academy - Prospective Student Subscription Form</h2>
-                <p>
-                Thank you for your interest in Avinya Academy. <br/><br/>
-                By completing this form, your name and contact information will
-                be added to our prospects database so that you can receive 
-                emails and notifications about Avinya Academy and student 
-                admissions related information. </p>
-                </div>
-                """,
-                      onLinkTap: (url, _, __, ___) async {
-                        if (await canLaunchUrl(Uri.parse(url!))) {
-                          await launchUrl(Uri.parse(url));
-                        } else {
-                          throw 'Could not launch $url';
-                        }
-                      },
+                    child: Container(
+                      alignment: Alignment.topLeft,
+                      child: Wrap(children: [
+                        Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Avinya Academy - Prospective Student Subscription Form",
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold),
+                              ),
+                              SizedBox(height: 20.0),
+                              Text(
+                                  "Thank you for your interest in Avinya Academy"),
+                              SizedBox(height: 10.0),
+                              Text(
+                                  "By completing this form, your name and contact information will be added to our prospects database,"),
+                              Text(
+                                  "so that you can receive emails and notifications about Avinya Academy and student admissions related information."),
+                              SizedBox(height: 10.0),
+                            ]),
+                      ]),
                     ),
                   ),
                 ),

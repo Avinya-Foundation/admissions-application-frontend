@@ -23,14 +23,19 @@ Future<void> main() async {
 
   setupWindow();
 
-  runApp(const SchoolManagementSystem());
+  runApp(const AdmissionsManagementSystem());
 
   await AppConfig.forEnvironment('dev');
   AppConfig.choreoSTSClientID = const String.fromEnvironment(
       'choreo_sts_client_id',
       defaultValue: 'undefined');
+  AppConfig.asgardeoClientId = const String.fromEnvironment(
+      'asgardeo_client_id',
+      defaultValue: 'undefined');
+
   log(AppConfig.admissionsApplicationBffApiUrl);
   log(AppConfig.choreoSTSClientID);
+  log(AppConfig.asgardeoClientId);
 }
 
 const double windowWidth = 480;

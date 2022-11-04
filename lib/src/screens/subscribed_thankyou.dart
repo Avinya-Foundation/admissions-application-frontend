@@ -1,8 +1,5 @@
 import 'package:ShoolManagementSystem/src/data/prospect.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
-
-import 'package:flutter_html/flutter_html.dart';
 
 class SubscribedThankyouScreen extends StatefulWidget {
   static const String route = 'subscribed_thankyou';
@@ -45,27 +42,24 @@ class _SubscribedThankyouScreenState extends State<SubscribedThankyouScreen> {
               children: <Widget>[
                 Center(
                   child: SingleChildScrollView(
-                    child: Html(
-                      data:
-                          """
-                <div>
-                <h2>Avinya Academy - Prospective Student Subscription</h2>
-                <p>
-                
-                You have successfully subscribed to our prospective student list. 
-                We will contact you shortly.
-                <br/><br/>
-                Thank you for your interest in Avinya Academy. 
-                </p>
-                </div>
-                """,
-                      onLinkTap: (url, _, __, ___) async {
-                        if (await canLaunchUrl(Uri.parse(url!))) {
-                          await launchUrl(Uri.parse(url));
-                        } else {
-                          throw 'Could not launch $url';
-                        }
-                      },
+                    child: Container(
+                      child: Wrap(children: [
+                        Column(children: [
+                          Text(
+                            "Avinya Academy - Prospective Student Subscription",
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(height: 20.0),
+                          Text(
+                              """ You have successfully subscribed to our prospective student list.
+                            We will contact you shortly.."""),
+                          SizedBox(height: 10.0),
+                          Text(
+                              "Thank you for your interest in Avinya Academy."),
+                          SizedBox(height: 10.0),
+                        ]),
+                      ]),
                     ),
                   ),
                 ),

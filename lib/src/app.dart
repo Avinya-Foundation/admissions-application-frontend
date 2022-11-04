@@ -7,14 +7,16 @@ import 'auth.dart';
 import 'routing.dart';
 import 'screens/navigator.dart';
 
-class SchoolManagementSystem extends StatefulWidget {
-  const SchoolManagementSystem({super.key});
+class AdmissionsManagementSystem extends StatefulWidget {
+  const AdmissionsManagementSystem({super.key});
 
   @override
-  State<SchoolManagementSystem> createState() => _SchoolManagementSystemState();
+  State<AdmissionsManagementSystem> createState() =>
+      _AdmissionsManagementSystemState();
 }
 
-class _SchoolManagementSystemState extends State<SchoolManagementSystem> {
+class _AdmissionsManagementSystemState
+    extends State<AdmissionsManagementSystem> {
   final _auth = SMSAuth();
   final _navigatorKey = GlobalKey<NavigatorState>();
   late final RouteState _routeState;

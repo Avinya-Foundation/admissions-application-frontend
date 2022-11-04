@@ -131,7 +131,7 @@ class AdmissionSystem {
         this.studentPerson = person;
       }
     } catch (e) {
-      print('In auth getSingIn :: Error fetching person from Avinya database');
+      print('In auth getSingIn :: Error fetching person for user');
       print(e);
     }
   }
