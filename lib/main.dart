@@ -29,7 +29,8 @@ Future<void> main() async {
   AppConfig.choreoSTSClientID = const String.fromEnvironment(
       'choreo_sts_client_id',
       defaultValue: 'undefined');
-  log(AppConfig.apiUrl);
+  log(AppConfig.admissionsApplicationBffApiUrl);
+  log(AppConfig.choreoSTSClientID);
 }
 
 const double windowWidth = 480;

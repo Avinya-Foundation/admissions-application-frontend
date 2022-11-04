@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'dart:html';
 
 import 'package:ShoolManagementSystem/src/data/admission_system.dart';
-import 'package:ShoolManagementSystem/src/data/person.dart';
 import 'package:flutter/widgets.dart';
 
 import 'package:url_launcher/url_launcher.dart';
@@ -60,6 +59,8 @@ class SMSAuth extends ChangeNotifier {
           // however when app reloads, apiTokens will be null
           // should refresh token when calling APIs
         } else {
+          log("in Auth -- choreoSTSClientID is :" +
+              AppConfig.choreoSTSClientID);
           final response = await http.post(
             Uri.parse(AppConfig.choreoSTSEndpoint),
             headers: <String, String>{
@@ -100,19 +101,7 @@ class SMSAuth extends ChangeNotifier {
     }
 
     if (_signedIn) {
-      // check if user is in Avinya database person table as a student
-      try {
-        Person person = admissionSystemInstance.getStudentPerson();
-        if (person.jwt_sub_id == null ||
-            person.jwt_sub_id != admissionSystemInstance.getJWTSub()!) {
-          person = await fetchPerson(admissionSystemInstance.getJWTSub()!);
-          admissionSystemInstance.setStudentPerson(person);
-        }
-      } catch (e) {
-        print(
-            'In auth getSingIn :: Error fetching person from Avinya database');
-        print(e);
-      }
+      admissionSystemInstance.fetchPersonForUser();
     }
 
     return _signedIn;

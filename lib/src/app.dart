@@ -124,9 +124,14 @@ class _SchoolManagementSystemState extends State<SchoolManagementSystem> {
       return subscribedThankyouRoute;
     } else if (!signedIn && from == preconditionsRoute) {
       return preconditionsRoute;
+    } else if (!signedIn && from != signInRoute) {
+      // Go to /signin if the user is not signed in
+      return signInRoute;
+    } else if (signedIn && from == signInRoute) {
+      return applyRoute;
     } else if (!signedIn && from == applyRoute) {
       return applyRoute;
-    } else if (!signedIn && from == testsRoute) {
+    } else if (signedIn && from == testsRoute) {
       return testsRoute;
     } else if (!signedIn && from == applicationRoute) {
       return applicationRoute;

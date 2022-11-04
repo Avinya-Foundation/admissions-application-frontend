@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:openid_client/openid_client_browser.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Credentials {
   final String username;
@@ -80,12 +82,43 @@ class _SignInScreenState extends State<SignInScreen> {
         title: Text("Sign in"),
       ),
       body: Container(
+        alignment: Alignment.center,
         child: Center(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Container(
+                alignment: Alignment.center,
+                child: SingleChildScrollView(
+                  child: Html(
+                    data: """
+                <div>
+                <h1>Avinya Acadamy Student Admissions</h1>
+                <p>To proceed to the next steps of the appliation proess, 
+                please sign in with your Gmail address.</p>
+                Once you sing in, you will be dorected to the rest of the pplication 
+                application froms.</p>
+                <p>If you have alread completed the application forms, you can sign in 
+                to view the application dashboard wheer you will see the status of your application.</p>
+                </div>
+                """,
+                    onLinkTap: (url, _, __, ___) async {
+                      if (await canLaunchUrl(Uri.parse(url!))) {
+                        await launchUrl(Uri.parse(url));
+                      } else {
+                        throw 'Could not launch $url';
+                      }
+                    },
+                  ),
+                ),
+              ),
               ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all(Colors.yellowAccent),
+                  shadowColor: MaterialStateProperty.all(Colors.lightBlue),
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -95,7 +128,13 @@ class _SignInScreenState extends State<SignInScreen> {
                       fit: BoxFit.contain,
                       width: 30,
                     ),
-                    Text("Login with Google"),
+                    Text(
+                      "Login with Google",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ],
                 ),
                 onPressed: () async {

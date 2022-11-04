@@ -142,9 +142,7 @@ Future<Person> fetchPerson(String jwt_sub_id) async {
   );
 
   if (response.statusCode == 200) {
-    var resultsJson = json.decode(response.body).cast<Map<String, dynamic>>();
-    Person person =
-        await resultsJson.map<Person>((json) => Person.fromJson(json));
+    Person person = Person.fromJson(json.decode(response.body));
     return person;
   } else {
     throw Exception('Failed to load Person');

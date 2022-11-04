@@ -121,6 +121,21 @@ class AdmissionSystem {
     return vacancies;
   }
 
+  void fetchPersonForUser() async {
+    // check if user is in Avinya database person table as a student
+    try {
+      Person person = admissionSystemInstance.getStudentPerson();
+      if (person.jwt_sub_id == null ||
+          person.jwt_sub_id != this.user_jwt_sub!) {
+        person = await fetchPerson(this.user_jwt_sub!);
+        this.studentPerson = person;
+      }
+    } catch (e) {
+      print('In auth getSingIn :: Error fetching person from Avinya database');
+      print(e);
+    }
+  }
+
   void addPerson(Person person) {
     persons!.add(person);
   }

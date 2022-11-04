@@ -97,13 +97,21 @@ class VacancyListState extends State<VacancyList> {
                                                           .indexOf(
                                                               ec)] = ec.id!) >
                                                       0)
-                                                    Text(
-                                                      ec.prompt!,
-                                                      style: TextStyle(
-                                                        fontSize: 15,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                      ),
+                                                    Container(
+                                                      width: 250,
+                                                      child: Wrap(children: [
+                                                        Text(
+                                                          ec.prompt!,
+                                                          overflow: TextOverflow
+                                                              .visible,
+                                                          // softWrap: true,
+                                                          style: TextStyle(
+                                                            fontSize: 15,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                      ]),
                                                     ),
                                                   if (ec.evalualtion_type ==
                                                       'Essay')

@@ -104,8 +104,9 @@ class _PreconditionsScreenState extends State<PreconditionsScreen> {
                 ),
                 SizedBox(height: 10.0),
                 ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/signin');
+                  onPressed: () async {
+                    // Navigator.pushNamed(context, '/signin');
+                    await routeState.go('/signin');
                   },
                   child: Text('Sign in'),
                 ),
@@ -439,7 +440,7 @@ class _PreconditionsScreenState extends State<PreconditionsScreen> {
                             const SnackBar(
                                 content: Text('You consented successfully')),
                           );
-                          await routeState.go('/apply');
+                          await routeState.go('/signin');
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(

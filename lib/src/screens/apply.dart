@@ -140,6 +140,14 @@ class _ApplyScreenState extends State<ApplyScreen> {
   @override
   Widget build(BuildContext context) {
     final routeState = RouteStateScope.of(context);
+    Person person = admissionSystemInstance.getStudentPerson();
+    if (admissionSystemInstance.getJWTSub() == person.jwt_sub_id) {
+      // the person already exists in the system
+      // so no need to prefill the form
+      // go to dashboard
+      routeState.go('/application');
+      return Container();
+    }
     return Scaffold(
       appBar: AppBar(
         title: const Text('Avinya Acadamy Student Application Form'),
@@ -383,6 +391,8 @@ class _ApplyScreenState extends State<ApplyScreen> {
             phone: int.parse(phoneMaskTextInputFormatter.getUnmaskedText()),
             email: _email_Controller.text,
             mailing_address_id: studentAddress.id,
+            jwt_sub_id: admissionSystemInstance.getJWTSub(),
+            jwt_email: admissionSystemInstance.getJWTEmail(),
           );
 
           ScaffoldMessenger.of(context).showSnackBar(
