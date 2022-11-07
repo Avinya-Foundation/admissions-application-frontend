@@ -64,11 +64,11 @@ class SMSAuth extends ChangeNotifier {
           int count = 0;
           while (AppConfig.choreoSTSClientID.isEmpty && count < 10) {
             log(count.toString() + " in Auth -- choreoSTSClientID is empty");
-            await Future.delayed(Duration(seconds: 1));
             count++;
             if (count > 10) {
               break;
             }
+            await Future.delayed(Duration(seconds: 1));
           }
           final response = await http.post(
             Uri.parse(AppConfig.choreoSTSEndpoint),

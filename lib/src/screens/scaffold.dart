@@ -7,9 +7,10 @@ import 'scaffold_body.dart';
 
 class SMSScaffold extends StatelessWidget {
   static const pageNames = [
+    '/application',
     '/tests/logical',
     '/books/popular',
-    '/authors',
+    //'/authors',
     // '/address_types/popular',
     // '/organizations/popular',
     // '/branches/popular',
@@ -70,28 +71,12 @@ class SMSScaffold extends StatelessWidget {
         },
         destinations: const [
           AdaptiveScaffoldDestination(
+            title: 'Application',
+            icon: Icons.home,
+          ),
+          AdaptiveScaffoldDestination(
             title: 'Tests',
             icon: Icons.text_snippet,
-          ),
-          AdaptiveScaffoldDestination(
-            title: 'Books',
-            icon: Icons.book,
-          ),
-          AdaptiveScaffoldDestination(
-            title: 'Authors',
-            icon: Icons.person,
-          ),
-          AdaptiveScaffoldDestination(
-            title: 'Settings',
-            icon: Icons.settings,
-          ),
-          AdaptiveScaffoldDestination(
-            title: 'Employees',
-            icon: Icons.people,
-          ),
-          AdaptiveScaffoldDestination(
-            title: 'Address Types',
-            icon: Icons.location_on,
           ),
         ],
       ),

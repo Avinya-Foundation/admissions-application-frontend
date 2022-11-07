@@ -39,6 +39,7 @@ class _SMSNavigatorState extends State<SMSNavigator> {
   final _preconditionsKey = const ValueKey('Preconditions');
   final _signInKey = const ValueKey('Sign in');
   final _testsKey = const ValueKey('Tests');
+  final _applicationKey = const ValueKey('Application');
   final _scaffoldKey = const ValueKey('App scaffold');
   final _bookDetailsKey = const ValueKey('Book details screen');
   final _authorDetailsKey = const ValueKey('Author details screen');
@@ -111,6 +112,11 @@ class _SMSNavigatorState extends State<SMSNavigator> {
         if (route.settings is Page &&
             (route.settings as Page).key == _testsKey) {
           routeState.go('/tests/logical');
+        }
+
+        if (route.settings is Page &&
+            (route.settings as Page).key == _applicationKey) {
+          routeState.go('/application');
         }
 
         return route.didPop(result);

@@ -23,7 +23,7 @@ Future<void> main() async {
 
   setupWindow();
 
-  runApp(const AdmissionsManagementSystem());
+  WidgetsFlutterBinding.ensureInitialized();
 
   await AppConfig.forEnvironment('dev');
   AppConfig.choreoSTSClientID = await const String.fromEnvironment(
@@ -36,6 +36,8 @@ Future<void> main() async {
   log(AppConfig.admissionsApplicationBffApiUrl);
   log(AppConfig.choreoSTSClientID);
   log(AppConfig.asgardeoClientId);
+
+  runApp(const AdmissionsManagementSystem());
 }
 
 const double windowWidth = 480;

@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:ShoolManagementSystem/src/config/app_config.dart';
 import 'package:flutter/material.dart';
@@ -24,13 +25,25 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
-  final String _clientId = AppConfig.asgardeoClientId;
+  String _clientId = AppConfig.asgardeoClientId;
   final String _issuerUrl = AppConfig.asgardeoTokenEndpoint;
 
   final List<String> _scopes = <String>['openid', 'profile', 'email'];
 
   @override
   Widget build(BuildContext context) {
+    log("in signin build -- asgardeoClientId is :" +
+        AppConfig.asgardeoClientId);
+    int count = 0;
+    while (_clientId.isEmpty && count < 10) {
+      log(count.toString() + " in Auth -- asgardeoClientId is empty");
+      count++;
+      if (count > 10) {
+        break;
+      }
+      sleep(Duration(seconds: 1));
+      _clientId = AppConfig.asgardeoClientId;
+    }
     return Scaffold(
       appBar: AppBar(
         title: Text("Sign in"),
@@ -104,7 +117,7 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 
   authenticate(Uri uri, String clientId, List<String> scopes) async {
-    log("Client ID :: " + clientId);
+    log("signin authenticate - Client ID :: " + clientId);
     // create the client
     var issuer = await Issuer.discover(uri);
     var client = new Client(issuer, clientId);

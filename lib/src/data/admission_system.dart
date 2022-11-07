@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:ShoolManagementSystem/src/data.dart';
 
 final admissionSystemInstance = AdmissionSystem()
@@ -129,9 +131,12 @@ class AdmissionSystem {
           person.jwt_sub_id != this.user_jwt_sub!) {
         person = await fetchPerson(this.user_jwt_sub!);
         this.studentPerson = person;
+        log('AdmissionSystem fetchPersonForUser: ' +
+            person.toJson().toString());
       }
     } catch (e) {
-      print('In auth getSingIn :: Error fetching person for user');
+      print(
+          'AdmissionSystem fetchPersonForUser :: Error fetching person for user');
       print(e);
     }
   }
