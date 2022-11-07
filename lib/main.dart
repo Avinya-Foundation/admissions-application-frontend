@@ -26,10 +26,10 @@ Future<void> main() async {
   runApp(const AdmissionsManagementSystem());
 
   await AppConfig.forEnvironment('dev');
-  AppConfig.choreoSTSClientID = const String.fromEnvironment(
+  AppConfig.choreoSTSClientID = await const String.fromEnvironment(
       'choreo_sts_client_id',
       defaultValue: 'undefined');
-  AppConfig.asgardeoClientId = const String.fromEnvironment(
+  AppConfig.asgardeoClientId = await const String.fromEnvironment(
       'asgardeo_client_id',
       defaultValue: 'undefined');
 

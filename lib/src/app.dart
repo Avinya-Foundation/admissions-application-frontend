@@ -101,6 +101,7 @@ class _AdmissionsManagementSystemState
 
   Future<ParsedRoute> _guard(ParsedRoute from) async {
     final signedIn = await _auth.getSignedIn();
+    String? jwt_sub = admissionSystemInstance.getJWTSub();
     final applyRoute = ParsedRoute('/apply', '/apply', {}, {});
     final subscribeRoute = ParsedRoute('/subscribe', '/subscribe', {}, {});
     final subscribedThankyouRoute =
@@ -116,15 +117,14 @@ class _AdmissionsManagementSystemState
         ParsedRoute('/application', '/application', {}, {});
 
     // Go to /apply if the user is not signed in
-    log("signed in $signedIn");
-    log("preconditions submitted ${admissionSystemInstance.getPrecondisionsSubmitted()}");
-    log("from preconditions route ${from == preconditionsRoute}\n");
-    log("from ${from.toString()}\n");
+    log("_guard signed in $signedIn");
+    log("_guard JWT sub ${jwt_sub}");
+    log("_guard from ${from.toString()}\n");
     if (!signedIn && from == subscribeRoute) {
       return subscribeRoute;
     } else if (!signedIn && from == subscribedThankyouRoute) {
       return subscribedThankyouRoute;
-    } else if (!signedIn && from == preconditionsRoute) {
+    } else if (!signedIn && from == preconditionsRoute && jwt_sub == null) {
       return preconditionsRoute;
     } else if (!signedIn && from != signInRoute) {
       // Go to /signin if the user is not signed in
@@ -139,6 +139,8 @@ class _AdmissionsManagementSystemState
     // Go to /application if the user is signed in and tries to go to /signin.
     else if (signedIn && from == signInRoute) {
       return ParsedRoute('/application', '/application', {}, {});
+    } else if (signedIn && jwt_sub != null) {
+      return applyRoute;
     }
     return from;
   }
