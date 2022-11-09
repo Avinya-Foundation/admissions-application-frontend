@@ -62,19 +62,19 @@ class _SignInScreenState extends State<SignInScreen> {
                     child: Wrap(children: [
                       Column(children: [
                         Text(
-                          "Avinya Acadamy Student Admissions",
+                          "Avinya Academy Student Admissions",
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.bold),
                         ),
                         SizedBox(height: 20.0),
                         Text(
-                            """To proceed to the next steps of the appliation proess, please sign in with your Gmail address"""),
+                            """To proceed to the next steps of the appliation process, please sign in with your Gmail address"""),
                         SizedBox(height: 10.0),
                         Text(
-                            "Once you sing in, you will be dorected to the rest of the pplication application froms"),
+                            "Once you sign in, you will be directed to the rest of the application froms"),
                         SizedBox(height: 10.0),
                         Text(
-                            """If you have alread completed the application forms, you can sign in to view the application dashboard wheer you will see the status of your application."""),
+                            """If you have already completed the application forms, you can sign in to view the application dashboard where you will see the status of your application."""),
                         SizedBox(height: 10.0),
                       ]),
                     ]),

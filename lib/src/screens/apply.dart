@@ -162,7 +162,7 @@ class _ApplyScreenState extends State<ApplyScreen> {
           } else if (snapshot.hasError) {
             return Scaffold(
               appBar: AppBar(
-                title: const Text('Avinya Acadamy Student Application Form'),
+                title: const Text('Avinya Academy Student Application Form'),
               ),
               body: Padding(
                 padding: const EdgeInsets.all(16),
