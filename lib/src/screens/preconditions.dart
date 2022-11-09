@@ -81,7 +81,7 @@ class _PreconditionsScreenState extends State<PreconditionsScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text('Avinya Acadamy Student Application Form'),
+        title: const Text('Avinya Academy Student Application Form'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
@@ -94,7 +94,7 @@ class _PreconditionsScreenState extends State<PreconditionsScreen> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  'If you are a student applicant who has already registered, please go to the singin page and login to your account.',
+                  'If you are a student applicant who has already registered, please go to the sign in page and login to your account.',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -128,18 +128,18 @@ class _PreconditionsScreenState extends State<PreconditionsScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      "Avinya Acadamy Student Admissions",
+                                      "Avinya Academy Student Admissions",
                                       style: TextStyle(
                                           fontSize: 20,
                                           fontWeight: FontWeight.bold),
                                     ),
                                     SizedBox(height: 10.0),
                                     Text(
-                                        "Avinya Acadamy is a school that is dedicated to providing a high quality education to students from all backgrounds."),
+                                        "Avinya Academy is a school that is dedicated to providing a high quality education to students from all backgrounds."),
                                     Text(
                                         "We are currently accepting applications for the 2022/2023 academic year. "),
                                     Text(
-                                        "Please fill out the form below to apply for admission to Avinya Acadamy. "),
+                                        "Please fill out the form below to apply for admission to Avinya Academy. "),
                                     SizedBox(height: 20.0),
                                     Text(
                                       "Application Eligibility Criteria",
@@ -298,8 +298,10 @@ class _PreconditionsScreenState extends State<PreconditionsScreen> {
                 TextFormField(
                   controller: _distance_Controller,
                   decoration: InputDecoration(
-                    labelText: 'Distance from School location in Kilometers *',
-                    hintText: 'How far you live from SIL Bandaragama in KM?',
+                    labelText:
+                        'Distance from the school location in Kilometers *',
+                    hintText:
+                        'How far you live from Avinya Academy Bandaragama in KM?',
                     helperText: 'e.g. 14',
                   ),
                   onFieldSubmitted: (_) {

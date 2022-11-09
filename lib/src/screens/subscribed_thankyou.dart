@@ -29,7 +29,7 @@ class _SubscribedThankyouScreenState extends State<SubscribedThankyouScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text('Avinya Acadamy - Student Admissions'),
+        title: const Text('Avinya Academy - Student Admissions'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
