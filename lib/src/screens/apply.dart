@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import '../config/app_config.dart';
 import '../routing.dart';
 
 class CityNearBandaragama {
@@ -163,6 +164,29 @@ class _ApplyScreenState extends State<ApplyScreen> {
             return Scaffold(
               appBar: AppBar(
                 title: const Text('Avinya Academy Student Application Form'),
+                actions: <Widget>[
+                  IconButton(
+                    icon: const Icon(Icons.info),
+                    tooltip: 'Help',
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute<void>(
+                        builder: (BuildContext context) {
+                          return Scaffold(
+                            appBar: AppBar(
+                              title: const Text('Help'),
+                            ),
+                            body: const Center(
+                              child: Text(
+                                'If you need help, write to us at admissions-help@avinyafoundation.org',
+                                style: TextStyle(fontSize: 24),
+                              ),
+                            ),
+                          );
+                        },
+                      ));
+                    },
+                  ),
+                ],
               ),
               body: Padding(
                 padding: const EdgeInsets.all(16),
@@ -365,6 +389,17 @@ class _ApplyScreenState extends State<ApplyScreen> {
                   ),
                 ),
               ),
+              persistentFooterButtons: [
+                new OutlinedButton(
+                    child: Text('About'),
+                    onPressed: () {
+                      showAboutDialog(
+                          context: context,
+                          applicationName: AppConfig.applicationName,
+                          applicationVersion: AppConfig.applicationVersion);
+                    }),
+                new Text("© 2022, Avinya Foundation."),
+              ],
             );
           }
           return const CircularProgressIndicator();

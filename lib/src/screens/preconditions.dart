@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/services.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import '../config/app_config.dart';
 import '../routing.dart';
 
 class PreconditionsScreen extends StatefulWidget {
@@ -82,6 +83,29 @@ class _PreconditionsScreenState extends State<PreconditionsScreen> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text('Avinya Academy Student Application Form'),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.info),
+            tooltip: 'Help',
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute<void>(
+                builder: (BuildContext context) {
+                  return Scaffold(
+                    appBar: AppBar(
+                      title: const Text('Help'),
+                    ),
+                    body: const Center(
+                      child: Text(
+                        'If you need help, write to us at admissions-help@avinyafoundation.org',
+                        style: TextStyle(fontSize: 24),
+                      ),
+                    ),
+                  );
+                },
+              ));
+            },
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
@@ -295,27 +319,27 @@ class _PreconditionsScreenState extends State<PreconditionsScreen> {
                   ),
                 ),
                 SizedBox(height: 10.0),
-                TextFormField(
-                  controller: _distance_Controller,
-                  decoration: InputDecoration(
-                    labelText:
-                        'Distance from the school location in Kilometers *',
-                    hintText:
-                        'How far you live from Avinya Academy Bandaragama in KM?',
-                    helperText: 'e.g. 14',
-                  ),
-                  onFieldSubmitted: (_) {
-                    _distance_FocusNode.requestFocus();
-                  },
-                  validator: (value) =>
-                      _mandatoryValidator(value) ?? _distanceValidator(value),
+                // TextFormField(
+                //   controller: _distance_Controller,
+                //   decoration: InputDecoration(
+                //     labelText:
+                //         'Distance from the school location in Kilometers *',
+                //     hintText:
+                //         'How far you live from Avinya Academy Bandaragama in KM?',
+                //     helperText: 'e.g. 14',
+                //   ),
+                //   onFieldSubmitted: (_) {
+                //     _distance_FocusNode.requestFocus();
+                //   },
+                //   validator: (value) =>
+                //       _mandatoryValidator(value) ?? _distanceValidator(value),
 
-                  keyboardType: TextInputType.number,
-                  inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.digitsOnly,
-                    // phoneMaskTextInputFormatter,
-                  ], // Only numbers can be entered
-                ),
+                //   keyboardType: TextInputType.number,
+                //   inputFormatters: <TextInputFormatter>[
+                //     FilteringTextInputFormatter.digitsOnly,
+                //     // phoneMaskTextInputFormatter,
+                //   ], // Only numbers can be entered
+                // ),
                 TextFormField(
                   controller: _phone_Controller,
                   decoration: InputDecoration(
@@ -501,6 +525,17 @@ class _PreconditionsScreenState extends State<PreconditionsScreen> {
           ),
         ),
       ),
+      persistentFooterButtons: [
+        new OutlinedButton(
+            child: Text('About'),
+            onPressed: () {
+              showAboutDialog(
+                  context: context,
+                  applicationName: AppConfig.applicationName,
+                  applicationVersion: AppConfig.applicationVersion);
+            }),
+        new Text("© 2022, Avinya Foundation."),
+      ],
     );
   }
 
@@ -539,7 +574,9 @@ class _PreconditionsScreenState extends State<PreconditionsScreen> {
           ol_year: olYear.year,
           email: _email_Controller.text,
           phone: int.parse(phoneMaskTextInputFormatter.getUnmaskedText()),
-          distance_to_school: int.parse(_distance_Controller.text),
+          // distance_to_school: int.parse(_distance_Controller.text),
+          distance_to_school:
+              15, // hard coding for now to 15 km to enable lager audiance for 1st batch of students
           information_correct_consent: checkbox1,
           agree_terms_consent: checkbox2,
         );

@@ -1,6 +1,7 @@
 import 'package:adaptive_navigation/adaptive_navigation.dart';
 import 'package:flutter/material.dart';
 
+import '../config/app_config.dart';
 import '../routing.dart';
 import '../auth.dart';
 import 'scaffold_body.dart';
@@ -54,7 +55,7 @@ class SMSScaffold extends StatelessWidget {
                       ),
                       body: const Center(
                         child: Text(
-                          'This is the help page',
+                          'If you need help, write to us at admissions-help@avinyafoundation.org',
                           style: TextStyle(fontSize: 24),
                         ),
                       ),
@@ -80,6 +81,17 @@ class SMSScaffold extends StatelessWidget {
           ),
         ],
       ),
+      persistentFooterButtons: [
+        new OutlinedButton(
+            child: Text('About'),
+            onPressed: () {
+              showAboutDialog(
+                  context: context,
+                  applicationName: AppConfig.applicationName,
+                  applicationVersion: AppConfig.applicationVersion);
+            }),
+        new Text("© 2022, Avinya Foundation."),
+      ],
     );
   }
 

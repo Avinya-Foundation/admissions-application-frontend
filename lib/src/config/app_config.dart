@@ -13,7 +13,7 @@ class AppConfig {
   static String asgardeoClientId = "";
   static var apiTokens = null;
   static String applicationName = 'Avinya Academy Student Admissions Portal';
-  static String applicationVersion = '0.3.0';
+  static String applicationVersion = '0.2.1';
 
   //AppConfig({required this.apiUrl});
 
