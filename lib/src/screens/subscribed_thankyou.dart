@@ -66,8 +66,7 @@ class _SubscribedThankyouScreenState extends State<SubscribedThankyouScreen> {
                           SizedBox(height: 10.0),
                           ElevatedButton(
                             onPressed: () async {
-                              // Navigator.pushNamed(context, '/signin');
-                              await routeState.go('/apply');
+                              await routeState.go('/preconditions');
                             },
                             child: Text('Fill in Application Forms'),
                           ),
