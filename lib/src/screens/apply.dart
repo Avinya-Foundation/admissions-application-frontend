@@ -2,11 +2,13 @@ import 'dart:developer';
 
 import 'package:ShoolManagementSystem/src/data.dart';
 import 'package:ShoolManagementSystem/src/data/address.dart';
+import 'package:flutter/gestures.dart';
 // import 'package:ShoolManagementSystem/src/data/library.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../config/app_config.dart';
 import '../routing.dart';
 
@@ -175,11 +177,23 @@ class _ApplyScreenState extends State<ApplyScreen> {
                             appBar: AppBar(
                               title: const Text('Help'),
                             ),
-                            body: const Center(
-                              child: Text(
-                                'If you need help, write to us at admissions-help@avinyafoundation.org',
-                                style: TextStyle(fontSize: 24),
-                              ),
+                            body: Align(
+                              alignment: Alignment.center,
+                              child: SelectableText.rich(TextSpan(
+                                text:
+                                    "If you need help, write to us at admissions-help@avinyafoundation.org",
+                                style: new TextStyle(color: Colors.blue),
+                                recognizer: new TapGestureRecognizer()
+                                  ..onTap = () {
+                                    launchUrl(Uri(
+                                      scheme: 'mailto',
+                                      path:
+                                          'admissions-help@avinyafoundation.org',
+                                      query:
+                                          'subject=Avinya Academy Admissions - Bandaragama&body=Question on my application', //add subject and body here
+                                    ));
+                                  },
+                              )),
                             ),
                           );
                         },

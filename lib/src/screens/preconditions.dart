@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:flutter/gestures.dart';
 import 'package:intl/intl.dart';
 import 'package:ShoolManagementSystem/src/data.dart';
 import 'package:ShoolManagementSystem/src/data/applicant_consent.dart';
@@ -8,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/services.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../config/app_config.dart';
 import '../routing.dart';
 
@@ -94,11 +96,22 @@ class _PreconditionsScreenState extends State<PreconditionsScreen> {
                     appBar: AppBar(
                       title: const Text('Help'),
                     ),
-                    body: const Center(
-                      child: Text(
-                        'If you need help, write to us at admissions-help@avinyafoundation.org',
-                        style: TextStyle(fontSize: 24),
-                      ),
+                    body: Align(
+                      alignment: Alignment.center,
+                      child: SelectableText.rich(TextSpan(
+                        text:
+                            "If you need help, write to us at admissions-help@avinyafoundation.org",
+                        style: new TextStyle(color: Colors.blue),
+                        recognizer: new TapGestureRecognizer()
+                          ..onTap = () {
+                            launchUrl(Uri(
+                              scheme: 'mailto',
+                              path: 'admissions-help@avinyafoundation.org',
+                              query:
+                                  'subject=Avinya Academy Admissions - Bandaragama&body=Question on my application', //add subject and body here
+                            ));
+                          },
+                      )),
                     ),
                   );
                 },
@@ -165,39 +178,39 @@ class _PreconditionsScreenState extends State<PreconditionsScreen> {
                                     Text(
                                         "Please fill out the form below to apply for admission to Avinya Academy. "),
                                     SizedBox(height: 20.0),
-                                    Text(
-                                      "Application Eligibility Criteria",
-                                      style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    SizedBox(height: 10.0),
-                                    Text(
-                                        "In order to be eligible to join an Avinya Academy the student will need to meet the following eligibility criteria:"),
-                                    SizedBox(height: 15.0),
-                                    Text(
-                                        "1. Be within a 15km radius of the Avinya Academy Bandaragama location"),
-                                    SizedBox(height: 10.0),
-                                    Text(
-                                        "2. Have attempted your O/L examination at least once"),
-                                    SizedBox(height: 10.0),
-                                    Text(
-                                        "3. Your year of birth is 2004 or 2005"),
-                                    SizedBox(height: 10.0),
-                                    Text(
-                                        "4. Interested in a vocational programme in IT, Healthcare or Tourism industries"),
-                                    SizedBox(height: 10.0),
-                                    Text(
-                                        "5. Committed to full time learning over a three year period"),
-                                    SizedBox(height: 10.0),
-                                    Text(
-                                        "6. Committed to attending school on a daily basis and spend around 8 hours in the shcool"),
-                                    SizedBox(height: 10.0),
-                                    Text(
-                                        "7. A valid phone number and an email address for us to contact you and your parents/guardians"),
-                                    SizedBox(height: 12.0),
-                                    Text(
-                                        "Please verify the following details before proceeding:"),
+                                    // Text(
+                                    //   "Application Eligibility Criteria",
+                                    //   style: TextStyle(
+                                    //       fontSize: 15,
+                                    //       fontWeight: FontWeight.bold),
+                                    // ),
+                                    // SizedBox(height: 10.0),
+                                    // Text(
+                                    //     "In order to be eligible to join an Avinya Academy the student will need to meet the following eligibility criteria:"),
+                                    // SizedBox(height: 15.0),
+                                    // Text(
+                                    //     "1. Be within a 15km radius of the Avinya Academy Bandaragama location"),
+                                    // SizedBox(height: 10.0),
+                                    // Text(
+                                    //     "2. Have attempted your O/L examination at least once"),
+                                    // SizedBox(height: 10.0),
+                                    // Text(
+                                    //     "3. Your year of birth is 2004 or 2005"),
+                                    // SizedBox(height: 10.0),
+                                    // Text(
+                                    //     "4. Interested in a vocational programme in IT, Healthcare or Tourism industries"),
+                                    // SizedBox(height: 10.0),
+                                    // Text(
+                                    //     "5. Committed to full time learning over a three year period"),
+                                    // SizedBox(height: 10.0),
+                                    // Text(
+                                    //     "6. Committed to attending school on a daily basis and spend around 8 hours in the shcool"),
+                                    // SizedBox(height: 10.0),
+                                    // Text(
+                                    //     "7. A valid phone number and an email address for us to contact you and your parents/guardians"),
+                                    // SizedBox(height: 12.0),
+                                    // Text(
+                                    //     "Please verify the following details before proceeding:"),
                                   ]),
                             ]),
                           ),
@@ -543,15 +556,15 @@ class _PreconditionsScreenState extends State<PreconditionsScreen> {
     return (text!.isEmpty) ? 'Required' : null;
   }
 
-  String? _distanceValidator(String? text) {
-    if (text!.isEmpty) {
-      return 'Required';
-    } else if (int.parse(text) > 15) {
-      return 'Distance cannot be more than 15 KM';
-    } else {
-      return null;
-    }
-  }
+  // String? _distanceValidator(String? text) {
+  //   if (text!.isEmpty) {
+  //     return 'Required';
+  //   } else if (int.parse(text) > 15) {
+  //     return 'Distance cannot be more than 15 KM';
+  //   } else {
+  //     return null;
+  //   }
+  // }
 
   String? _phoneValidator(String? text) {
     String? value = phoneMaskTextInputFormatter.getUnmaskedText();

@@ -13,6 +13,11 @@ class Prospect {
   int? phone;
   String? name;
   String? email;
+  String? street_address;
+  String? date_of_birth;
+  bool? done_ol;
+  int? ol_year;
+  int? distance_to_school;
 
   Prospect({
     this.id,
@@ -24,6 +29,11 @@ class Prospect {
     this.phone,
     this.name,
     this.email,
+    this.street_address,
+    this.date_of_birth,
+    this.done_ol,
+    this.ol_year,
+    this.distance_to_school,
   });
 
   factory Prospect.fromJson(Map<String, dynamic> json) {
@@ -37,6 +47,11 @@ class Prospect {
       phone: json['phone'],
       name: json['name'],
       email: json['email'],
+      street_address: json['street_address'],
+      date_of_birth: json['date_of_birth'],
+      done_ol: json['done_ol'],
+      ol_year: json['ol_year'],
+      distance_to_school: json['distance_to_school'],
     );
   }
 
@@ -52,6 +67,12 @@ class Prospect {
         if (phone != null) 'phone': phone,
         if (name != null) 'name': name,
         if (email != null) 'email': email,
+        if (street_address != null) 'street_address': street_address,
+        if (date_of_birth != null) 'date_of_birth': date_of_birth,
+        if (done_ol != null) 'done_ol': done_ol,
+        if (ol_year != null) 'ol_year': ol_year,
+        if (distance_to_school != null)
+          'distance_to_school': distance_to_school,
       };
 }
 

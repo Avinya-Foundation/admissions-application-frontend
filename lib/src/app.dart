@@ -55,7 +55,7 @@ class _AdmissionsManagementSystemState
         '/#access_token',
       ],
       guard: _guard,
-      initialRoute: '/preconditions',
+      initialRoute: '/subscribe',
     );
 
     _routeState = RouteState(_routeParser);
@@ -148,7 +148,7 @@ class _AdmissionsManagementSystemState
   void _handleAuthStateChanged() async {
     bool signedIn = await _auth.getSignedIn();
     if (!signedIn) {
-      _routeState.go('/preconditions');
+      _routeState.go('/subscribe');
     }
   }
 

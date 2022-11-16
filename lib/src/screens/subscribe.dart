@@ -2,10 +2,14 @@ import 'dart:developer';
 
 import 'package:ShoolManagementSystem/src/data.dart';
 import 'package:ShoolManagementSystem/src/data/prospect.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:url_launcher/url_launcher.dart';
+import '../config/app_config.dart';
 import '../routing.dart';
 
 class SubscribeScreen extends StatefulWidget {
@@ -24,9 +28,13 @@ class _SubscribeScreenState extends State<SubscribeScreen> {
   late FocusNode _phone_FocusNode;
   late TextEditingController _email_Controller;
   late FocusNode _email_FocusNode;
+  late TextEditingController _address_Controller;
+  late FocusNode _address_FocusNode;
 
-  bool receive_information_consent = false;
-  bool agree_terms_consent = false;
+  bool receive_information_consent = true;
+  bool agree_terms_consent = true;
+
+  DateTime dateOfBirth = DateTime.utc(2005, 1, 1);
 
   MaskTextInputFormatter phoneMaskTextInputFormatter =
       new MaskTextInputFormatter(
@@ -43,6 +51,9 @@ class _SubscribeScreenState extends State<SubscribeScreen> {
     _phone_FocusNode = FocusNode();
     _email_Controller = TextEditingController();
     _email_FocusNode = FocusNode();
+    _address_Controller = TextEditingController();
+    _address_FocusNode = FocusNode();
+    _address_Controller.text = '';
   }
 
   @override
@@ -53,17 +64,57 @@ class _SubscribeScreenState extends State<SubscribeScreen> {
     _phone_FocusNode.dispose();
     _email_Controller.dispose();
     _email_FocusNode.dispose();
+    _address_Controller.dispose();
+    _address_FocusNode.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final routeState = RouteStateScope.of(context);
-    double c_width = MediaQuery.of(context).size.width * 0.8;
+    //double c_width = MediaQuery.of(context).size.width * 0.8;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text('Avinya Academy - Student Admissions'),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.info),
+            tooltip: 'Help',
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute<void>(
+                builder: (BuildContext context) {
+                  return Scaffold(
+                    appBar: AppBar(
+                      title: const Text('Help'),
+                    ),
+                    body: Align(
+                      alignment: Alignment.center,
+                      child: SelectableText.rich(
+                        TextSpan(
+                          text:
+                              "If you need help, write to us at admissions-help@avinyafoundation.org",
+                          style: new TextStyle(color: Colors.blue),
+                          recognizer: new TapGestureRecognizer()
+                            ..onTap = () {
+                              launchUrl(Uri(
+                                scheme: 'mailto',
+                                path: 'admissions-help@avinyafoundation.org',
+                                query:
+                                    'subject=Avinya Academy Admissions - Bandaragama&body=Question on my application', //add subject and body here
+                              ));
+                            },
+                        ),
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  );
+                },
+              ));
+            },
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
@@ -92,9 +143,35 @@ class _SubscribeScreenState extends State<SubscribeScreen> {
                                   "Thank you for your interest in Avinya Academy"),
                               SizedBox(height: 10.0),
                               Text(
-                                  "By completing this form, your name and contact information will be added to our prospects database,"),
+                                  "Please fill in the form if you are interested in applying for a place at Avinya Academy. We will contact you with further information."),
                               Text(
-                                  "so that you can receive emails and notifications about Avinya Academy and student admissions related information."),
+                                  "Please note that we are currently only accepting applications for Avinya Academy Bandaragama."),
+                              SizedBox(height: 10.0),
+                              Text(
+                                  "Avinya Academy හි ස්ථානයක් සඳහා අයදුම් කිරීමට ඔබ කැමති නම් කරුණාකර පෝරමය පුරවන්න. වැඩිදුර තොරතුරු සමඟ අපි ඔබව සම්බන්ධ කර ගන්නෙමු."),
+                              Text(
+                                  "දැනට අප අයදුම්පත් භාර ගන්නේ අවින්‍යා ඇකඩමිය බණ්ඩාරගම ශාඛාව සඳහා පමණක් බව කරුණාවෙන් සලකන්න."),
+                              SizedBox(height: 10.0),
+                              SelectableText(''),
+                              SelectableText.rich(TextSpan(
+                                text:
+                                    "ඔබට උදව් අවශ්‍ය නම්, admissions-help@avinyafoundation.org වෙත විද්‍යුත් තැපෑලක් එවන්න.",
+                                style: new TextStyle(color: Colors.blue),
+                                recognizer: new TapGestureRecognizer()
+                                  ..onTap = () {
+                                    launchUrl(Uri(
+                                      scheme: 'mailto',
+                                      path:
+                                          'admissions-help@avinyafoundation.org',
+                                      query:
+                                          'subject=Avinya Academy Admissions - Bandaragama&body=Question on my application', //add subject and body here
+                                    ));
+                                  },
+                              )),
+                              // Text(
+                              //     "By completing this form, your name and contact information will be added to our prospects database,"),
+                              // Text(
+                              //     "so that you can receive emails and notifications about Avinya Academy and student admissions related information."),
                               SizedBox(height: 10.0),
                             ]),
                       ]),
@@ -147,107 +224,141 @@ class _SubscribeScreenState extends State<SubscribeScreen> {
                       ? null
                       : "Please enter a valid email",
                 ),
-                SizedBox(width: 10.0, height: 5.0),
-                FormField<bool>(
-                  builder: (state) {
-                    return Row(children: [
-                      SizedBox(width: 10.0),
-                      SizedBox(
-                        width: 10,
-                        child: Checkbox(
-                          value: receive_information_consent,
-                          activeColor: Colors.orange,
-                          onChanged: (value) {
-                            //value may be true or false
-                            setState(() {
-                              receive_information_consent =
-                                  !receive_information_consent;
-                              state.didChange(value);
-                            });
-                          },
-                        ),
-                      ),
-                      SizedBox(width: 10.0),
-                      Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              state.errorText ?? '',
-                              style: TextStyle(
-                                color: Theme.of(context).errorColor,
-                              ),
-                            ),
-                            SizedBox(width: 10.0),
-                            Container(
-                              width: c_width,
-                              child: Text(
-                                'I agree to receive announcements and news via email or text messages.',
-                                softWrap: true,
-                              ),
-                            ),
-                          ]),
-                    ]);
+                SizedBox(height: 10.0),
+                TextFormField(
+                  controller: _address_Controller,
+                  decoration: const InputDecoration(
+                      labelText: 'Address',
+                      hintText: 'Enter your address',
+                      helperText:
+                          'You must be able to receive mail at this address'),
+                  onFieldSubmitted: (_) {
+                    _address_FocusNode.requestFocus();
                   },
-                  validator: (value) {
-                    if (!receive_information_consent) {
-                      return 'You need to verify informaton correctness';
-                    } else {
-                      return null;
-                    }
-                  },
+                  //validator: _mandatoryValidator,
                 ),
                 SizedBox(width: 10.0, height: 5.0),
-                FormField<bool>(
-                  builder: (state) {
-                    return Row(children: [
-                      SizedBox(width: 10.0),
-                      SizedBox(
-                        width: 10,
-                        child: Checkbox(
-                          value: agree_terms_consent,
-                          activeColor: Colors.orange,
-                          onChanged: (value) {
-                            //value may be true or false
-                            setState(() {
-                              agree_terms_consent = !agree_terms_consent;
-                              state.didChange(value);
-                            });
-                          },
-                        ),
-                      ),
-                      SizedBox(width: 10.0),
-                      Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              state.errorText ?? '',
-                              style: TextStyle(
-                                color: Theme.of(context).errorColor,
-                              ),
-                            ),
-                            SizedBox(width: 10.0),
-                            Container(
-                              width: c_width,
-                              child: Text(
-                                'By checking this box, I agree to the Terms of Use and Privacy Policy' +
-                                    ' (unless I am under the age of 18, in which case,' +
-                                    ' I represent that my parent or legal guardian also agrees' +
-                                    ' to the Terms of Use on my behalf)',
-                                softWrap: true,
-                              ),
-                            ),
-                          ]),
-                    ]);
-                  },
-                  validator: (value) {
-                    if (!agree_terms_consent) {
-                      return 'You need to agree to the terms and conditions';
-                    } else {
-                      return null;
-                    }
-                  },
-                ),
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  Text(
+                      'Date of birth: ${dateOfBirth.year}/${dateOfBirth.month}/${dateOfBirth.day}'),
+                  Container(
+                    // Need to use container to add size constraint.
+                    width: 300,
+                    height: 400,
+                    child: CalendarDatePicker(
+                      firstDate: DateTime(2003, 1),
+                      lastDate: DateTime(2007, 2),
+                      initialDate: dateOfBirth,
+                      initialCalendarMode: DatePickerMode.day,
+                      onDateChanged: (DateTime dateTime) {
+                        setState(() {
+                          dateOfBirth = dateTime;
+                        });
+                      },
+                    ),
+                  ),
+                ]),
                 SizedBox(width: 10.0, height: 5.0),
+                // FormField<bool>(
+                //   builder: (state) {
+                //     return Row(children: [
+                //       SizedBox(width: 10.0),
+                //       SizedBox(
+                //         width: 10,
+                //         child: Checkbox(
+                //           value: receive_information_consent,
+                //           activeColor: Colors.orange,
+                //           onChanged: (value) {
+                //             //value may be true or false
+                //             setState(() {
+                //               receive_information_consent =
+                //                   !receive_information_consent;
+                //               state.didChange(value);
+                //             });
+                //           },
+                //         ),
+                //       ),
+                //       SizedBox(width: 10.0),
+                //       Column(
+                //           crossAxisAlignment: CrossAxisAlignment.start,
+                //           children: [
+                //             Text(
+                //               state.errorText ?? '',
+                //               style: TextStyle(
+                //                 color: Theme.of(context).errorColor,
+                //               ),
+                //             ),
+                //             SizedBox(width: 10.0),
+                //             Container(
+                //               width: c_width,
+                //               child: Text(
+                //                 'I agree to receive announcements and news via email or text messages.',
+                //                 softWrap: true,
+                //               ),
+                //             ),
+                //           ]),
+                //     ]);
+                //   },
+                //   validator: (value) {
+                //     if (!receive_information_consent) {
+                //       return 'You need to verify informaton correctness';
+                //     } else {
+                //       return null;
+                //     }
+                //   },
+                // ),
+                // SizedBox(width: 10.0, height: 5.0),
+                // FormField<bool>(
+                //   builder: (state) {
+                //     return Row(children: [
+                //       SizedBox(width: 10.0),
+                //       SizedBox(
+                //         width: 10,
+                //         child: Checkbox(
+                //           value: agree_terms_consent,
+                //           activeColor: Colors.orange,
+                //           onChanged: (value) {
+                //             //value may be true or false
+                //             setState(() {
+                //               agree_terms_consent = !agree_terms_consent;
+                //               state.didChange(value);
+                //             });
+                //           },
+                //         ),
+                //       ),
+                //       SizedBox(width: 10.0),
+                //       Column(
+                //           crossAxisAlignment: CrossAxisAlignment.start,
+                //           children: [
+                //             Text(
+                //               state.errorText ?? '',
+                //               style: TextStyle(
+                //                 color: Theme.of(context).errorColor,
+                //               ),
+                //             ),
+                //             SizedBox(width: 10.0),
+                //             Container(
+                //               width: c_width,
+                //               child: Text(
+                //                 'By checking this box, I agree to the Terms of Use and Privacy Policy' +
+                //                     ' (unless I am under the age of 18, in which case,' +
+                //                     ' I represent that my parent or legal guardian also agrees' +
+                //                     ' to the Terms of Use on my behalf)',
+                //                 softWrap: true,
+                //               ),
+                //             ),
+                //           ]),
+                //     ]);
+                //   },
+                //   validator: (value) {
+                //     if (!agree_terms_consent) {
+                //       return 'You need to agree to the terms and conditions';
+                //     } else {
+                //       return null;
+                //     }
+                //   },
+                // ),
+                // SizedBox(width: 10.0, height: 5.0),
                 ElevatedButton(
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
@@ -297,6 +408,17 @@ class _SubscribeScreenState extends State<SubscribeScreen> {
           ),
         ),
       ),
+      persistentFooterButtons: [
+        new OutlinedButton(
+            child: Text('About'),
+            onPressed: () {
+              showAboutDialog(
+                  context: context,
+                  applicationName: AppConfig.applicationName,
+                  applicationVersion: AppConfig.applicationVersion);
+            }),
+        new Text("© 2022, Avinya Foundation."),
+      ],
     );
   }
 
@@ -322,6 +444,8 @@ class _SubscribeScreenState extends State<SubscribeScreen> {
             name: _name_Controller.text,
             phone: int.parse(phoneMaskTextInputFormatter.getUnmaskedText()),
             email: _email_Controller.text,
+            street_address: _address_Controller.text,
+            date_of_birth: DateFormat('yyyy-MM-dd').format(dateOfBirth),
             receive_information_consent: receive_information_consent,
             agree_terms_consent: agree_terms_consent);
         log(prospect.toJson().toString());
