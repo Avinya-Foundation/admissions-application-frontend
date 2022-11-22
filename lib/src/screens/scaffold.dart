@@ -1,6 +1,9 @@
 import 'package:adaptive_navigation/adaptive_navigation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
+import '../config/app_config.dart';
 import '../routing.dart';
 import '../auth.dart';
 import 'scaffold_body.dart';
@@ -52,11 +55,22 @@ class SMSScaffold extends StatelessWidget {
                       appBar: AppBar(
                         title: const Text('Help'),
                       ),
-                      body: const Center(
-                        child: Text(
-                          'This is the help page',
-                          style: TextStyle(fontSize: 24),
-                        ),
+                      body: Align(
+                        alignment: Alignment.center,
+                        child: SelectableText.rich(TextSpan(
+                          text:
+                              "If you need help, write to us at admissions-help@avinyafoundation.org",
+                          style: new TextStyle(color: Colors.blue),
+                          recognizer: new TapGestureRecognizer()
+                            ..onTap = () {
+                              launchUrl(Uri(
+                                scheme: 'mailto',
+                                path: 'admissions-help@avinyafoundation.org',
+                                query:
+                                    'subject=Avinya Academy Admissions - Bandaragama&body=Question on my application', //add subject and body here
+                              ));
+                            },
+                        )),
                       ),
                     );
                   },
@@ -80,6 +94,17 @@ class SMSScaffold extends StatelessWidget {
           ),
         ],
       ),
+      persistentFooterButtons: [
+        new OutlinedButton(
+            child: Text('About'),
+            onPressed: () {
+              showAboutDialog(
+                  context: context,
+                  applicationName: AppConfig.applicationName,
+                  applicationVersion: AppConfig.applicationVersion);
+            }),
+        new Text("© 2022, Avinya Foundation."),
+      ],
     );
   }
 

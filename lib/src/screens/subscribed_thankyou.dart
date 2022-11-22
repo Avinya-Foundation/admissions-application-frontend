@@ -1,6 +1,8 @@
 import 'package:ShoolManagementSystem/src/data/prospect.dart';
 import 'package:flutter/material.dart';
 
+import '../routing.dart';
+
 class SubscribedThankyouScreen extends StatefulWidget {
   static const String route = 'subscribed_thankyou';
   final Prospect? prospect;
@@ -26,6 +28,7 @@ class _SubscribedThankyouScreenState extends State<SubscribedThankyouScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final routeState = RouteStateScope.of(context);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -54,10 +57,19 @@ class _SubscribedThankyouScreenState extends State<SubscribedThankyouScreen> {
                           Text(
                               """ You have successfully subscribed to our prospective student list.
                             We will contact you shortly.."""),
+                          // SizedBox(height: 10.0),
+                          // Text(
+                          //     "Thank you for your interest in Avinya Academy."),
                           SizedBox(height: 10.0),
                           Text(
-                              "Thank you for your interest in Avinya Academy."),
+                              "If you would like to proceed to fill in the application forms, please click below."),
                           SizedBox(height: 10.0),
+                          ElevatedButton(
+                            onPressed: () async {
+                              await routeState.go('/preconditions');
+                            },
+                            child: Text('Fill in Application Forms'),
+                          ),
                         ]),
                       ]),
                     ),

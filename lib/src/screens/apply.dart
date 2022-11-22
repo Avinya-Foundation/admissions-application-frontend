@@ -2,11 +2,14 @@ import 'dart:developer';
 
 import 'package:ShoolManagementSystem/src/data.dart';
 import 'package:ShoolManagementSystem/src/data/address.dart';
+import 'package:flutter/gestures.dart';
 // import 'package:ShoolManagementSystem/src/data/library.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:url_launcher/url_launcher.dart';
+import '../config/app_config.dart';
 import '../routing.dart';
 
 class CityNearBandaragama {
@@ -163,6 +166,41 @@ class _ApplyScreenState extends State<ApplyScreen> {
             return Scaffold(
               appBar: AppBar(
                 title: const Text('Avinya Academy Student Application Form'),
+                actions: <Widget>[
+                  IconButton(
+                    icon: const Icon(Icons.info),
+                    tooltip: 'Help',
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute<void>(
+                        builder: (BuildContext context) {
+                          return Scaffold(
+                            appBar: AppBar(
+                              title: const Text('Help'),
+                            ),
+                            body: Align(
+                              alignment: Alignment.center,
+                              child: SelectableText.rich(TextSpan(
+                                text:
+                                    "If you need help, write to us at admissions-help@avinyafoundation.org",
+                                style: new TextStyle(color: Colors.blue),
+                                recognizer: new TapGestureRecognizer()
+                                  ..onTap = () {
+                                    launchUrl(Uri(
+                                      scheme: 'mailto',
+                                      path:
+                                          'admissions-help@avinyafoundation.org',
+                                      query:
+                                          'subject=Avinya Academy Admissions - Bandaragama&body=Question on my application', //add subject and body here
+                                    ));
+                                  },
+                              )),
+                            ),
+                          );
+                        },
+                      ));
+                    },
+                  ),
+                ],
               ),
               body: Padding(
                 padding: const EdgeInsets.all(16),
@@ -365,6 +403,17 @@ class _ApplyScreenState extends State<ApplyScreen> {
                   ),
                 ),
               ),
+              persistentFooterButtons: [
+                new OutlinedButton(
+                    child: Text('About'),
+                    onPressed: () {
+                      showAboutDialog(
+                          context: context,
+                          applicationName: AppConfig.applicationName,
+                          applicationVersion: AppConfig.applicationVersion);
+                    }),
+                new Text("© 2022, Avinya Foundation."),
+              ],
             );
           }
           return const CircularProgressIndicator();
