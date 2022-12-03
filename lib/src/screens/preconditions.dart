@@ -239,8 +239,8 @@ class _PreconditionsScreenState extends State<PreconditionsScreen> {
                     width: 300,
                     height: 400,
                     child: CalendarDatePicker(
-                      firstDate: DateTime(2004, 1),
-                      lastDate: DateTime(2006, 2),
+                      firstDate: DateTime(2000, 1),
+                      lastDate: DateTime(2007, 2),
                       initialDate: dateOfBirth,
                       initialCalendarMode: DatePickerMode.day,
                       onDateChanged: (DateTime dateTime) {
@@ -319,9 +319,9 @@ class _PreconditionsScreenState extends State<PreconditionsScreen> {
                   width: 300,
                   height: 400,
                   child: YearPicker(
-                    firstDate: DateTime(2020),
+                    firstDate: DateTime(2018),
                     lastDate: DateTime(2022),
-                    initialDate: DateTime(2022),
+                    initialDate: DateTime(2021),
                     currentDate: DateTime(2021),
                     selectedDate: olYear,
                     onChanged: (DateTime dateTime) {
