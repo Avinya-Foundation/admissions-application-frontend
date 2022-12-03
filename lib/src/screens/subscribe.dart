@@ -246,7 +246,7 @@ class _SubscribeScreenState extends State<SubscribeScreen> {
                     width: 300,
                     height: 400,
                     child: CalendarDatePicker(
-                      firstDate: DateTime(2003, 1),
+                      firstDate: DateTime(2000, 1),
                       lastDate: DateTime(2007, 2),
                       initialDate: dateOfBirth,
                       initialCalendarMode: DatePickerMode.day,
