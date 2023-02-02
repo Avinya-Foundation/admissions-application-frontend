@@ -1,6 +1,6 @@
-import 'dart:developer';
+// import 'dart:developer';
 
-import 'package:ShoolManagementSystem/src/data/admission_system.dart';
+// import 'package:ShoolManagementSystem/src/data/admission_system.dart';
 import 'package:flutter/material.dart';
 
 import 'auth.dart';
@@ -28,6 +28,7 @@ class _AdmissionsManagementSystemState
     /// Configure the parser with all of the app's allowed path templates.
     _routeParser = TemplateRouteParser(
       allowedPaths: [
+        '/admissions_closed',
         '/subscribe',
         '/subscribed_thankyou',
         '/preconditions',
@@ -100,55 +101,60 @@ class _AdmissionsManagementSystemState
       );
 
   Future<ParsedRoute> _guard(ParsedRoute from) async {
-    final signedIn = await _auth.getSignedIn();
-    String? jwt_sub = admissionSystemInstance.getJWTSub();
-    final applyRoute = ParsedRoute('/apply', '/apply', {}, {});
-    final subscribeRoute = ParsedRoute('/subscribe', '/subscribe', {}, {});
-    final subscribedThankyouRoute =
-        ParsedRoute('/subscribed_thankyou', '/subscribed_thankyou', {}, {});
+    // final signedIn = await _auth.getSignedIn();
+    // String? jwt_sub = admissionSystemInstance.getJWTSub();
+    // final applyRoute = ParsedRoute('/apply', '/apply', {}, {});
+    // final subscribeRoute = ParsedRoute('/subscribe', '/subscribe', {}, {});
+    // final subscribedThankyouRoute =
+    //     ParsedRoute('/subscribed_thankyou', '/subscribed_thankyou', {}, {});
 
-    final preconditionsRoute =
-        ParsedRoute('/preconditions', '/preconditions', {}, {});
-    final signInRoute = ParsedRoute('/signin', '/signin', {}, {});
+    // final preconditionsRoute =
+    //     ParsedRoute('/preconditions', '/preconditions', {}, {});
+    // final signInRoute = ParsedRoute('/signin', '/signin', {}, {});
 
-    final testsRoute = ParsedRoute('/tests/logical', '/tests/logical', {}, {});
+    // final testsRoute = ParsedRoute('/tests/logical', '/tests/logical', {}, {});
 
-    final applicationRoute =
-        ParsedRoute('/application', '/application', {}, {});
+    // final applicationRoute =
+    //     ParsedRoute('/application', '/application', {}, {});
+
+    final admissionsClosedRoute =
+        ParsedRoute('/admissions_closed', '/admissions_closed', {}, {});
+
+    return admissionsClosedRoute; // admissions closed; always return this page until next time
 
     // Go to /apply if the user is not signed in
-    log("_guard signed in $signedIn");
-    log("_guard JWT sub ${jwt_sub}");
-    log("_guard from ${from.toString()}\n");
-    if (!signedIn && from == subscribeRoute) {
-      return subscribeRoute;
-    } else if (!signedIn && from == subscribedThankyouRoute) {
-      return subscribedThankyouRoute;
-    } else if (!signedIn && from == preconditionsRoute && jwt_sub == null) {
-      return preconditionsRoute;
-    } else if (!signedIn && from != signInRoute) {
-      // Go to /signin if the user is not signed in
-      return signInRoute;
-    } else if (signedIn && from == applyRoute) {
-      return applyRoute;
-    } else if (signedIn && from == testsRoute) {
-      return testsRoute;
-    } else if (signedIn && from == applicationRoute) {
-      return applicationRoute;
-    }
-    // Go to /application if the user is signed in and tries to go to /signin.
-    else if (signedIn && from == signInRoute) {
-      return ParsedRoute('/application', '/application', {}, {});
-    } else if (signedIn && jwt_sub != null) {
-      return applyRoute;
-    }
-    return from;
+    // log("_guard signed in $signedIn");
+    // log("_guard JWT sub ${jwt_sub}");
+    // log("_guard from ${from.toString()}\n");
+    // if (!signedIn && from == subscribeRoute) {
+    //   return subscribeRoute;
+    // } else if (!signedIn && from == subscribedThankyouRoute) {
+    //   return subscribedThankyouRoute;
+    // } else if (!signedIn && from == preconditionsRoute && jwt_sub == null) {
+    //   return preconditionsRoute;
+    // } else if (!signedIn && from != signInRoute) {
+    //   // Go to /signin if the user is not signed in
+    //   return signInRoute;
+    // } else if (signedIn && from == applyRoute) {
+    //   return applyRoute;
+    // } else if (signedIn && from == testsRoute) {
+    //   return testsRoute;
+    // } else if (signedIn && from == applicationRoute) {
+    //   return applicationRoute;
+    // }
+    // // Go to /application if the user is signed in and tries to go to /signin.
+    // else if (signedIn && from == signInRoute) {
+    //   return ParsedRoute('/application', '/application', {}, {});
+    // } else if (signedIn && jwt_sub != null) {
+    //   return applyRoute;
+    // }
+    // return from;
   }
 
   void _handleAuthStateChanged() async {
     bool signedIn = await _auth.getSignedIn();
     if (!signedIn) {
-      _routeState.go('/subscribe');
+      _routeState.go('/admissions_closed');
     }
   }
 

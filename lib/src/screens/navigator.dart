@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:ShoolManagementSystem/src/screens/admissions_closed.dart';
 import 'package:ShoolManagementSystem/src/screens/apply.dart';
 import 'package:ShoolManagementSystem/src/screens/preconditions.dart';
 import 'package:ShoolManagementSystem/src/screens/subscribe.dart';
@@ -45,6 +46,7 @@ class _SMSNavigatorState extends State<SMSNavigator> {
   final _authorDetailsKey = const ValueKey('Author details screen');
   final _employeeDetailsKey = const ValueKey('Employee details screen');
   final _addressTypeDetailsKey = const ValueKey('Adress Type details screen');
+  final _admissionsClosedKey = const ValueKey('Admissions closed screen');
 
   @override
   Widget build(BuildContext context) {
@@ -122,7 +124,13 @@ class _SMSNavigatorState extends State<SMSNavigator> {
         return route.didPop(result);
       },
       pages: [
-        if (routeState.route.pathTemplate == '/apply')
+        if (routeState.route.pathTemplate == '/admissions_closed')
+          // Display the sign in screen.
+          FadeTransitionPage<void>(
+            key: _admissionsClosedKey,
+            child: AdmissionsClosedScreen(),
+          )
+        else if (routeState.route.pathTemplate == '/apply')
           // Display the sign in screen.
           FadeTransitionPage<void>(
             key: _applyKey,
